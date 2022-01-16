@@ -1,17 +1,15 @@
-n, r, c = map(int, input().split())
-res = 0
-while n:
-    n -= 1
-    if r < 2 ** n and c >= 2 ** n:
-        res += (2 ** n) ** 2 * 1
-        c -= 2 ** n
-    elif r < 2 ** n and c < 2 ** n:
-        res += (2 ** n) ** 2 * 0
-    elif r >= 2 ** n and c < 2 ** n:
-        res += (2 ** n) ** 2 * 2
-        r -= 2 ** n
-    else:
-        res += (2 ** n) ** 2 * 3
-        r -= 2 ** n
-        c -= 2 ** n
-print(res)
+import sys 
+input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
+
+N, r, c = map(int, input().split())
+
+result = 0
+
+for i in range(N) :
+	result += (2**(2*N - 1 - 2*i)) * (r // (2**(N-i-1)))
+	result += (2**(2*N - 2 - 2*i)) * (c // (2**(N-i-1)))
+	r = r % (2**(N-i-1))
+	c = c % (2**(N-i-1))
+
+print(result)
