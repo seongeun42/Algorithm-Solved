@@ -1,14 +1,11 @@
-import sys
-from collections import deque
-
-n = int(sys.stdin.readline())
-a = list(map(int, sys.stdin.readline().split()))
-stack = [0]
+n = int(input())
+sl, sr = list(map(int, input().split())), []
 res = [-1] * n
-
-for i in range(len(a)):
-    while stack and a[i] > a[stack[-1]]:
-        res[stack.pop()] = a[i]
-    stack.append(i)
-
-print(" ".join(map(str, res)))
+for i in range(n):
+    v = sl.pop()
+    if sr and v >= sr[-1]:
+        while sr and v >= sr[-1]:
+            sr.pop()
+    res[n - i - 1] = sr[-1] if sr else -1
+    sr.append(v)
+print(*res, sep=' ')
