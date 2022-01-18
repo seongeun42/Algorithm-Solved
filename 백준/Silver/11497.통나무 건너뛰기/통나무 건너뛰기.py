@@ -1,8 +1,16 @@
+# https://www.acmicpc.net/problem/11497
+
+def get_difficulty(height_array, n):
+    height_array.sort()
+
+    result = 0
+    for j in range(2, n):
+        result = max(result, height_array[j]-height_array[j-2])
+    
+    return result
+
 t = int(input())
 for _ in range(t):
     n = int(input())
-    l = sorted(list(map(int, input().split())))
-    res = 0
-    for i in range(n - 1, 1, -1):
-        res = max(res, l[i] - l[i - 2])
-    print(res)
+    height_array = list(map(int, input().split()))
+    print(get_difficulty(height_array, n))
