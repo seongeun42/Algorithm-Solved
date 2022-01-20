@@ -1,8 +1,4 @@
-s = int(input())
-i, res = 2, 1
-while 1:
-    if res <= s < res + i:
-        print(i - 1)
-        break
-    res += i
-    i += 1
+import math
+s=int(input())
+n=math.floor(math.sqrt(2*s+0.25)-0.5)
+print(n)
