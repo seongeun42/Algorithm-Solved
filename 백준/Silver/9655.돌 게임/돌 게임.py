@@ -1,3 +1,3 @@
-n = int(input())
-th, on = divmod(n, 3)
-print('SK' if (th + on) % 2 else 'CY')
+n=int(input())%4
+if n==1 or n==3: print("SK")
+else: print("CY")
