@@ -1,6 +1,18 @@
 from collections import deque
 import sys
+sys.setrecursionlimit(10**9)
 input = sys.stdin.readline
+
+def dfs(jd, x, y, h):
+    jd[y][x] = h
+    dx = [1, -1, 0, 0]
+    dy = [0, 0, 1, -1]
+    for i in range(4):
+        a, b = x + dx[i], y + dy[i]
+        if 0 <= a < len(m) and 0 <= b < len(m):
+            if m[b][a] > h:
+                dfs(jd, a, b, h)
+    return 1
 
 def bfs(jd, x, y, h):
     jd[y][x] = h
@@ -15,15 +27,17 @@ def bfs(jd, x, y, h):
                 if jd[b][a] > h:
                     jd[b][a] = h
                     q.append([a, b])
+    return 1
 
 n = int(input())
 m = [list(map(int, input().split())) for _ in range(n)]
-cnt = [0] * max(max(m))
-cnt[0] = 1
-for i in range(len(cnt) - 1, 0, -1):
+res = 1
+for i in range(max(max(m)) - 1, 0, -1):
+    cnt = 0
     for r in range(n):
         for c in range(n):
             if m[r][c] > i:
-                bfs(m, c, r, i)
-                cnt[i] += 1
-print(max(cnt))
+                # cnt += dfs(m, c, r, i)
+                cnt += bfs(m, c, r, i)
+    res = max(res, cnt)
+print(res)
