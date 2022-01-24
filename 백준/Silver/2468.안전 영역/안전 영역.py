@@ -1,29 +1,50 @@
 from collections import deque
-import sys
-input = sys.stdin.readline
-
-def bfs(jd, x, y, h):
-    jd[y][x] = h
-    q = deque([[x, y]])
-    dx = [1, -1, 0, 0]
-    dy = [0, 0, 1, -1]
-    while q:
-        v = q.popleft()
-        for i in range(4):
-            a, b = v[0] + dx[i], v[1] + dy[i]
-            if 0 <= a < len(jd) and 0 <= b < len(jd):
-                if jd[b][a] > h:
-                    jd[b][a] = h
-                    q.append([a, b])
 
 n = int(input())
-m = [list(map(int, input().split())) for _ in range(n)]
-cnt = [0] * max(max(m))
-cnt[0] = 1
-for i in range(len(cnt) - 1, 0, -1):
-    for r in range(n):
-        for c in range(n):
-            if m[r][c] > i:
-                bfs(m, c, r, i)
-                cnt[i] += 1
-print(max(cnt))
+arr = [[0] * n for _ in range(n)]
+
+max_height = 0
+for i in range(n):
+    data = list(map(int, input().split()))
+    for j in range(n):
+        max_height = max(max_height, data[j])
+        arr[i][j] = data[j]
+
+
+def bfs(i: int, j: int, arr: list[list[int]], visited: list[list[bool]], height: int):
+    dx = (-1, 1, 0, 0)
+    dy = (0, 0, -1, 1)
+
+    visited[i][j] = True
+    queue = deque()
+    queue.append((i, j))
+
+    while queue:
+        x, y = queue.popleft()
+
+        for k in range(4):
+            adj_x = x + dx[k]
+            adj_y = y + dy[k]
+
+            if adj_x < 0 or adj_x >= n or adj_y < 0 or adj_y >= n:
+                continue
+
+            if not visited[adj_x][adj_y] and arr[adj_x][adj_y] > height:
+                visited[adj_x][adj_y] = True
+                queue.append((adj_x, adj_y))
+
+
+answer = 0
+
+for height in range(0,101):
+    count = 0
+    visited = [[False] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if not visited[i][j] and arr[i][j] > height:
+                count += 1
+                bfs(i, j, arr, visited, height)
+
+    answer = max(answer, count)
+
+print(answer)
