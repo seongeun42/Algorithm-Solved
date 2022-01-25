@@ -1,21 +1,29 @@
 import sys
+
 input = sys.stdin.readline
-n, m = map(int, input().split())
-leng = list(map(int, input().split()))
-res, s, e, mid = 1e9, max(leng), sum(leng), 0
-while s <= e:
-    mid = (s + e) // 2
-    cnt, t = 1, 0
-    for v in leng:
-        if t + v <= mid:
-            t += v
-        else:
-            t = v
+
+
+def condition(key):
+    cnt = 1
+    sub = 0
+    for time in lesson:
+        sub += time
+        if sub > key:
+            sub = time
             cnt += 1
 
-    if cnt > m:
-        s = mid + 1
+    return cnt <= M
+
+
+N, M = map(int, input().split())
+lesson = list(map(int, input().split()))
+low, high = max(lesson), sum(lesson)
+
+while low <= high:
+    mid = (low + high) // 2
+
+    if condition(mid):
+        high = mid - 1
     else:
-        res = min(res, mid)
-        e = mid - 1
-print(res)
+        low = mid + 1
+print(low)
