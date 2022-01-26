@@ -1,19 +1,19 @@
-from itertools import permutations
+def dfs(t, i, plus, sub, mult, div):
+    if i == n:
+        res.append(t)
+        return
+    if plus:
+        dfs(t + a[i], i + 1, plus - 1, sub, mult, div)
+    if sub:
+        dfs(t - a[i], i + 1, plus, sub - 1, mult, div)
+    if mult:
+        dfs(t * a[i], i + 1, plus, sub, mult - 1, div)
+    if div:
+        dfs(int(t / a[i]), i + 1, plus, sub, mult, div - 1)
+
 n = int(input())
 a = list(map(int, input().split()))
 o = list(map(int, input().split()))
-op = ['+'] * o[0] + ['-'] * o[1] + ['*'] * o[2] + ['//'] * o[3]
-opc = set(permutations(op, n - 1))
 res = []
-for v in opc:
-    t = a[0]
-    for i in range(1, n):
-        if v[i - 1] == '+':
-            t += a[i]
-        elif v[i - 1] == '-':
-            t -= a[i]
-        elif v[i - 1] == '*':
-            t *= a[i]
-        else: t = int(t / a[i])
-    res.append(t)
+dfs(a[0], 1, o[0], o[1], o[2], o[3])
 print(max(res), min(res), sep='\n')
