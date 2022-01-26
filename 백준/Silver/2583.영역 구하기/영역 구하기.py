@@ -1,4 +1,3 @@
-from collections import deque
 import sys
 sys.setrecursionlimit(10**7)
 input = sys.stdin.readline
@@ -15,23 +14,6 @@ def dfs(x, y):
                 c += dfs(a, b)
     return c
 
-def bfs(x, y):
-    dx = [1, -1, 0, 0]
-    dy = [0, 0, 1, -1]
-    paper[y][x] = 0
-    q = deque([[x, y]])
-    c = 1
-    while q:
-        v = q.popleft()
-        for i in range(4):
-            a, b = v[0] + dx[i], v[1] + dy[i]
-            if 0 <= a < n and 0 <= b < m:
-                if paper[b][a]:
-                    paper[b][a] = 0
-                    c += 1
-                    q.append([a, b])
-    return c
-
 m, n, k = map(int, input().split())
 r = [list(map(int, input().split())) for _ in range(k)]
 paper = [[1] * n for _ in range(m)]
@@ -43,7 +25,6 @@ cnt = []
 for i in range(m):
     for j in range(n):
         if paper[i][j]:
-            # cnt.append(dfs(j, i))
-            cnt.append(bfs(j, i))
+            cnt.append(dfs(j, i))
 print(len(cnt))
 print(*sorted(cnt), sep=' ')
