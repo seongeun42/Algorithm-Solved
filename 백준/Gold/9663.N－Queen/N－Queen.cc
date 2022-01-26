@@ -1,80 +1,38 @@
-#include <iostream>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-int map[15][15];
-int len, answer;
+int n;
+int res = 0;
+int q[15] = {0,};
 
-bool check(int x, int y) {
-    return (0 <= x) && (x <= len - 1) && (0 <= y) && (y <= len - 1);
+bool check(int r)
+{
+  for (int i = 0; i < r; i++)
+    if (q[i] == q[r] || abs(q[r] - q[i]) == r - i )
+      return false;
+  return true;
 }
 
-void checkTrue(int x, int y) {
-    for (int i = 0; i < len; i++) {
-        map[i][y]++;
-        map[x][i]++;
-    }
+void qeens(int r)
+{
+  if (r == n)
+  {
+    res++;
+    return;
+  }
 
-    for (int i = x, j = y; check(i, j); i++, j++) {
-        map[i][j]++;
-    }
-    for (int i = x, j = y; check(i, j); i--, j++) {
-        map[i][j]++;
-    }
-    for (int i = x, j = y; check(i, j); i++, j--) {
-        map[i][j]++;
-    }
-    for (int i = x, j = y; check(i, j); i--, j--) {
-        map[i][j]++;
-    }
+  for (int i = 0; i < n; i++)
+  {
+    q[r] = i;
+    if (check(r))
+      qeens(r + 1);
+  }
 }
 
-void checkFalse(int x, int y) {
-    for (int i = 0; i < len; i++) {
-        map[i][y]--;
-        map[x][i]--;
-    }
-
-    for (int i = x, j = y; check(i, j); i++, j++) {
-        map[i][j]--;
-    }
-    for (int i = x, j = y; check(i, j); i--, j++) {
-        map[i][j]--;
-    }
-    for (int i = x, j = y; check(i, j); i++, j--) {
-        map[i][j]--;
-    }
-    for (int i = x, j = y; check(i, j); i--, j--) {
-        map[i][j]--;
-    }
+int main()
+{
+  cin >> n;
+  qeens(0);
+  cout << res;
 }
 
-void f(int x, int y) {
-    if (y == len - 1) {
-        answer++;
-        return;
-    }
-
-    checkTrue(x, y);
-
-    for (int i = 0; i < len; i++) {
-        if (!map[i][y + 1]) {
-            f(i, y + 1);
-        }
-    }
-
-    checkFalse(x, y);
-}
-
-int main() {
-    int n;
-    cin >> n;
-
-    len = n;
-
-    for (int i = 0; i < n; i++) {
-        f(i, 0);
-    }
-
-    cout << answer;
-}
