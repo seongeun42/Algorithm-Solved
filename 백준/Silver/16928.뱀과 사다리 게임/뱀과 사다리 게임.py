@@ -1,11 +1,11 @@
 from collections import deque
 def bfs(cnt):
     q = deque([1])
-    cnt[1] = 0
     while q:
         cur = q.popleft()
         for i in range(1, 7):
-            next = la_sn[cur + i] if cur + i in la_sn else cur + i
+            v = cur + i
+            next = la_sn[v] if v in la_sn else v
             if next <= 100 and cnt[next] == 0:
                 cnt[next] = cnt[cur] + 1
                 q.append(next)
