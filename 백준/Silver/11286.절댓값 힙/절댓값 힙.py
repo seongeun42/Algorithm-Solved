@@ -1,10 +1,28 @@
-import heapq, sys
+import heapq as hq
+import sys
+
 input = sys.stdin.readline
-n = int(input())
-hp = []
-for _ in range(n):
-    v = int(input())
-    if v:
-        heapq.heappush(hp, [abs(v), v])
+min_heap = [] # 양수
+max_heap = [] # 음수
+
+for _ in range(int(input())):
+    x = int(input())
+    if x:
+        if x > 0:
+            hq.heappush(min_heap, x)
+        else:
+            hq.heappush(max_heap, -x)
     else:
-        print(heapq.heappop(hp)[1] if hp else 0)
+        if min_heap:
+            if max_heap:
+                if min_heap[0] < abs(-max_heap[0]):
+                    print(hq.heappop(min_heap))
+                else:
+                    print(-hq.heappop(max_heap))
+            else:
+                print(hq.heappop(min_heap))
+        else:
+            if max_heap:
+                print(-hq.heappop(max_heap))
+            else:
+                print(0)
