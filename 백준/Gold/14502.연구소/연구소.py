@@ -1,43 +1,56 @@
+import sys
 from collections import deque
 from itertools import combinations
-import copy
+input = sys.stdin.readline
 
-def bfs(w):
-    dx = [1, -1, 0, 0]
-    dy = [0, 0, 1, -1]
-    tmp = copy.deepcopy(lab)
-    q = deque(virus)
-    for i in range(3):
-        tmp[w[i][1]][w[i][0]] = 1
-    while q:
-        v = q.popleft()
-        for i in range(4):
-            a, b = v[0] + dx[i], v[1] + dy[i]
-            if 0 <= a < M and 0 <= b < N:
-                if tmp[b][a] == 0:
-                    tmp[b][a] = 2
-                    q.append([a, b])
-    return cnt_safe(tmp)
+def bfs(sx, sy):
+  cnt = 0
+  q = deque()
+  q.append((sx,sy))
+  check[sx][sy] = 1
 
-def cnt_safe(tmp):
-    cnt = 0
-    for i in range(N):
-        for j in range(M):
-            if tmp[i][j] == 0:
-                cnt += 1
-    return cnt
+  while q:
+    cnt += 1
+    x, y = q.popleft()
+    for i in range(4):
+      nx, ny = x+dx[i], y+dy[i]
+      if 0<=nx<N and 0<=ny<M and not check[nx][ny] and board[nx][ny] == 0:
+        check[nx][ny] = 1
+        q.append((nx,ny))
 
-N, M = map(int, input().split())
-lab = [list(map(int, input().split())) for _ in range(N)]
-zero, virus = [], []
+  return cnt
+
+N, M = map(int,input().split())
+board = [list(map(int,input().split())) for _ in range(N)]
+dx, dy = [0,0,1,-1], [1,-1,0,0]
+not_wall = []
+wall = 3
+virus = []
+
 for n in range(N):
-    for m in range(M):
-        if lab[n][m] == 2:
-            virus.append([m, n])
-        elif lab[n][m] == 0:
-            zero.append([m, n])
-wall = list(combinations(zero, 3))
-res = 0
-for w in wall:
-    res = max(res, bfs(w))
-print(res)
+  for m in range(M):
+    if board[n][m] == 0:
+      not_wall.append((n,m))
+    elif board[n][m] == 2:
+      virus.append((n,m))
+    else:
+      wall += 1
+
+answer = 0
+for w1, w2, w3 in list(combinations(not_wall,3)):
+  board[w1[0]][w1[1]] = 1
+  board[w2[0]][w2[1]] = 1
+  board[w3[0]][w3[1]] = 1
+
+  check = [[0]*M for _ in range(N)]
+  cnt = 0
+  for vx, vy in virus:
+    if not check[vx][vy]:
+      cnt += bfs(vx,vy)
+  answer = max(answer, N*M-wall-cnt)
+
+  board[w1[0]][w1[1]] = 0
+  board[w2[0]][w2[1]] = 0
+  board[w3[0]][w3[1]] = 0
+
+print(answer)
