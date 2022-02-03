@@ -1,25 +1,17 @@
-from collections import deque
 import sys
+sys.setrecursionlimit(10**9)
 input = sys.stdin.readline
 
-def bfs():
-    q = deque([[home[0], home[1]]])
-    visited = [0] * n
-    while q:
-        x, y = q.popleft()
-        if abs(x - fest[0]) + abs(y - fest[1]) <= 1000:
-            print("happy")
-            return
-        for i, v in enumerate(conv):
-            if not visited[i] and abs(x - v[0]) + abs(y - v[1]) <= 1000:
-                q.append(v)
-                visited[i] = 1
-    print("sad")
+def dfs(node):
+    visited[node] = 1
+    for i, v in enumerate(d):
+        if not visited[i] and abs(d[node][0] - v[0]) + abs(d[node][1] - v[1]) <= 1000:
+            dfs(i)
 
 t = int(input())
 for _ in range(t):
     n = int(input())
-    home = [*map(int, input().split())]
-    conv = [[*map(int, input().split())] for _ in range(n)]
-    fest = [*map(int, input().split())]
-    bfs()
+    d = [[*map(int, input().split())] for _ in range(n + 2)]
+    visited = [0] * (n + 2)
+    dfs(0)
+    print("happy" if visited[-1] else "sad")
