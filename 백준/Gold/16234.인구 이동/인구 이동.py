@@ -1,25 +1,19 @@
-from collections import deque
 import sys
+sys.setrecursionlimit(2500)
 input = sys.stdin.readline
 
-def bfs(x, y, visited):
+def dfs(x, y, visited, union):
     dx = [-1, 1, 0, 0]
     dy = [0, 0, -1, 1]
-    q = deque([[x, y]])
-    cnt = A[y][x]
-    union = [[x, y]]
+    cnt = 0
+    union.append([x, y])
     visited[y][x] = 1
-    while q:
-        v = q.popleft()
-        for i in range(4):
-            a, b = v[0] + dx[i], v[1] + dy[i]
-            if 0 <= a < N and 0 <= b < N:
-                if L <= abs(A[v[1]][v[0]] - A[b][a]) <= R and not visited[b][a]:
-                    cnt += A[b][a]
-                    visited[b][a] = 1
-                    union.append([a, b])
-                    q.append([a, b])
-    return [cnt // len(union), union] if cnt != A[y][x] else 0
+    for i in range(4):
+        a, b = x + dx[i], y + dy[i]
+        if 0 <= a < N and 0 <= b < N:
+            if L <= abs(A[y][x] - A[b][a]) <= R and not visited[b][a]:
+                cnt += dfs(a, b, visited, union)
+    return cnt + A[y][x]
 
 N, L, R = map(int, input().split())
 A = [[*map(int, input().split())] for _ in range(N)]
@@ -29,9 +23,10 @@ while 1:
     for i in range(N):
         for j in range(N):
             if not visited[i][j]:
-                tmp = bfs(j, i, visited)
-                if tmp:
-                    move.append(tmp)
+                union = []
+                tmp = dfs(j, i, visited, union)
+                if tmp != A[i][j]:
+                    move.append([tmp//len(union), union])
     if move:
         res += 1
         while move:
