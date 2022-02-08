@@ -1,48 +1,61 @@
 from collections import deque
+import sys, queue
 
-def bfs(x, y):
-    q = deque([[x, y]])
-    B[y][x] = 0
+# 정답을 참고했습니다.
+## 저는 어렵네요.. ㅎㅎ;;
+
+# Set direction
+dx = [-1, 0, 1, 0]
+dy = [0, -1, 0, 1]
+
+
+def BFS():
     while q:
-        v = q.popleft()
+        x, y = q.popleft()
+        if visited[x][y] != 'F':
+            flag = visited[x][y]
+        else:
+            flag = "F"
+        
         for i in range(4):
-            a, b = v[0] + dx[i], v[1] + dy[i]
-            if not (0 <= a < w and 0 <= b < h):
-                return B[v[1]][v[0]] + 1
-            if B[b][a] != '#' and B[b][a] != '.':
-                if B[v[1]][v[0]] + 1 < -B[b][a]:
-                    B[b][a] = B[v[1]][v[0]] + 1
-                    q.append([a, b])
-            if B[b][a] == '.':
-                B[b][a] = B[v[1]][v[0]] + 1
-                q.append([a, b])
+            nx, ny = x + dx[i], y + dy[i]
+            
+            if 0 <= nx < row and 0 <= ny < col:
+                if visited[nx][ny] == 0 and (bldg[nx][ny] == '.' or bldg[nx][ny] == '@'):
+                    if flag == "F":
+                        visited[nx][ny] = flag
+                    else :
+                        visited[nx][ny] = flag + 1
+                    q.append((nx, ny))
+            else:
+                if flag != "F":
+                    return flag
     return "IMPOSSIBLE"
 
-def fire_bfs():
-    while fire:
-        v = fire.popleft()
-        for i in range(4):
-            a, b = v[0] + dx[i], v[1] + dy[i]
-            if 0 <= a < w and 0 <= b < h:
-                if B[b][a] == '.' or B[b][a] == '@':
-                    B[b][a] = B[v[1]][v[0]] - 1
-                    fire.append([a, b])
+# Get Param
+N = int(input())
 
-T = int(input())
-for _ in range(T):
-    w, h = map(int, input().split())
-    B = [list(input()) for _ in range(h)]
-    dx = [1, -1, 0, 0]
-    dy = [0, 0, 1, -1]
-    fire = deque([])
-    sg = []
-    for i in range(h):
-        for j in range(w):
-            if B[i][j] == '*':
-                fire.append([j, i])
-                B[i][j] = 0
-            if B[i][j] == '@':
-                sg = [j, i]
-                B[i][j] = 0
-    fire_bfs()
-    print(bfs(sg[0], sg[1]))
+# Loop
+for _ in range(N):
+    col, row = map(int, sys.stdin.readline().split())
+
+    bldg = [] # 빌딩
+    q = deque() # 불과 상근의 위치
+    visited = [[0] * col for _ in range(row)]
+    start = []
+
+    for r in range(row):
+        bldg.append(sys.stdin.readline().rstrip())
+
+        # Get F, hero Spot
+        for c in range(col):
+            if bldg[r][c] == '@':
+                visited[r][c] = 1
+                start = (r,c)
+
+            elif bldg[r][c] == '*':
+                visited[r][c] = 'F'
+                q.append((r, c))
+        
+    q.append(start)
+    print(BFS()) 
