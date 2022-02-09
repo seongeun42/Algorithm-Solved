@@ -1,13 +1,23 @@
-from sys import stdin as s
-def find(n, k):
-    if n >= k:
-        return n - k
-    elif k == 1:
-        return 1
-    elif k % 2:
-        return min(find(n, k + 1), find(n, k - 1)) + 1     
-    else:
-        return min(k - n, find(n, k // 2))
+from collections import deque
 
-a, b = map(int, s.readline().split())
-print(find(a, b))
+def bfs():
+    q = deque([N])
+    a[N] = 0
+    while q:
+        v = q.popleft()
+        if v == K:
+            return a[K]
+        if 0 <= 2 * v < 100001 and a[2 * v] == -1:
+            a[2 * v] = a[v]
+            q.appendleft(2 * v)
+        if 0 <= v - 1 < 100001 and a[v - 1] == -1:
+            a[v - 1] = a[v] + 1
+            q.append(v - 1)
+        if 0 <= v + 1 < 100001 and a[v + 1] == -1:
+            a[v + 1] = a[v] + 1
+            q.append(v + 1)
+
+
+N, K = map(int, input().split())
+a = [-1] * 100001
+print(bfs())
