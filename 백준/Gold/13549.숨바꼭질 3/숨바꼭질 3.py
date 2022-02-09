@@ -1,24 +1,13 @@
-import heapq
+from sys import stdin as s
+def find(n, k):
+    if n >= k:
+        return n - k
+    elif k == 1:
+        return 1
+    elif k % 2:
+        return min(find(n, k + 1), find(n, k - 1)) + 1     
+    else:
+        return min(k - n, find(n, k // 2))
 
-def bfs():
-    q = []
-    visit[N] = 1
-    heapq.heappush(q, [0, N])
-    while q:
-        t, l = heapq.heappop(q)
-        if l == K:
-            return t
-        if 0 <= 2 * l < 100001 and not visit[2 * l]:
-            visit[2 * l] = 1
-            heapq.heappush(q, [t, 2 * l])
-        if 0 <= l - 1 < 100001 and not visit[l - 1]:
-            visit[l - 1] = 1
-            heapq.heappush(q, [t + 1, l - 1])
-        if 0 <= l + 1 < 100001 and not visit[l + 1]:
-            visit[l + 1] = 1
-            heapq.heappush(q, [t + 1, l + 1])
-
-
-N, K = map(int, input().split())
-visit = [0] * 100001
-print(bfs())
+a, b = map(int, s.readline().split())
+print(find(a, b))
