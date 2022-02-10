@@ -2,13 +2,10 @@ import sys
 input = sys.stdin.readline
 N, M = map(int, input().split())
 cost = [int(input()) for _ in range(N)]
-s, e = min(cost), sum(cost)
+s, e = max(cost), sum(cost)
 k = 0
 while s <= e:
     mid = (s + e) // 2
-    if mid < max(cost):
-        s = mid + 1
-        continue
     bal = mid
     cnt = 1
     for i in range(N):
