@@ -1,5 +1,12 @@
-from itertools import product
+def backtrack(dep):
+    if dep == M:
+        print(*res, sep=' ')
+    else:
+        for i in range(1, N+1):
+            res.append(i)
+            backtrack(dep + 1)
+            res.pop()
+
 N, M = map(int, input().split())
-res = list(product(range(1, N+1), repeat=M))
-for v in res:
-    print(*v, sep=' ')
+res = []
+backtrack(0)
