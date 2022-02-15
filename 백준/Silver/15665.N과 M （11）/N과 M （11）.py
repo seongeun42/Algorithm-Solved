@@ -1,6 +1,15 @@
-from itertools import product
+def backtrack(dep):
+    if dep == M:
+        print(*res, sep=' ')
+    else:
+        for i, v in enumerate(nums):
+            if i > 0 and v == nums[i - 1]:
+                continue
+            res.append(v)
+            backtrack(dep + 1)
+            res.pop()
+
 N, M = map(int, input().split())
-nums = [*map(int, input().split())]
-res = sorted(set(product(nums, repeat=M)))
-for v in res:
-    print(*v, sep=' ')
+nums = sorted([*map(int, input().split())])
+res = []
+backtrack(0)
