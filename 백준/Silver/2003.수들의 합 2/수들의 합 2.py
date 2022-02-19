@@ -6,6 +6,7 @@ while l <= r and r <= N:
     v = sum(A[l:r])
     if v == M:
         cnt += 1
+        l += 1
         r += 1
     elif v < M:
         r += 1
