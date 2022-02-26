@@ -1,4 +1,3 @@
-from collections import deque
 import sys
 sys.setrecursionlimit(10**5)
 input = sys.stdin.readline
@@ -10,20 +9,6 @@ def dfs(c, r, chr):
         x, y = c + dx[i], r + dy[i]
         if 0 <= x < N and 0 <= y < M and war[y][x] == chr:
             cnt += dfs(x, y, chr)
-    return cnt
-
-def bfs(c, r, chr):
-    q = deque([[c, r]])
-    war[r][c] = 0
-    cnt = 1
-    while q:
-        v = q.popleft()
-        for i in range(4):
-            x, y = v[0] + dx[i], v[1] + dy[i]
-            if 0 <= x < N and 0 <= y < M and war[y][x] == chr:
-                war[y][x] = 0
-                cnt += 1
-                q.append([x, y])
     return cnt
 
 N, M = map(int, input().split())
