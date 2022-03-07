@@ -1,5 +1,13 @@
 from collections import deque
 
+def dfs(i, numbers, total, target):
+    ans = 0
+    if len(numbers) == i:
+        return 1 if total == target else 0
+    ans += dfs(i + 1, numbers, total - numbers[i], target)
+    ans += dfs(i + 1, numbers, total + numbers[i], target)
+    return ans
+
 def bfs(numbers, target):
     q = deque([[0, 0]])
     ans = 0
@@ -11,7 +19,7 @@ def bfs(numbers, target):
         elif total == target:
             ans += 1
     return ans
-        
 
 def solution(numbers, target):
-    return bfs(numbers, target)
+    return dfs(0, numbers, 0, target)
+    #return bfs(numbers, target)
