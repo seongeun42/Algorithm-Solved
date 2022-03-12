@@ -1,11 +1,9 @@
-def dfs(visit, node):
+def dfs(node):
     if not G[node] or node >= N:
         return 1
-    visit[node] = 1
     cnt = 0
     for n in G[node]:
-        if not visit[n]:
-            cnt += dfs(visit, n)
+        cnt += dfs(n)
     return cnt
 
 N = int(input())
@@ -19,8 +17,7 @@ for cn, pn in enumerate(nodes):
         roots.append(cn)
     else:
         G[pn].append(cn)
-visited = [0] * N
 ans = 0
 for n in roots:
-    ans += dfs(visited, n)
+    ans += dfs(n)
 print(ans)
