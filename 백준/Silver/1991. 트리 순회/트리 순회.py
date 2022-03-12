@@ -1,15 +1,14 @@
-def dfs(visit, node, i):
+def dfs(node, i):
     if node >= N:
         return
-    visit[node] = 1
     if i == 0:
         print(chr(node + A), end='')
-    if G[node][0] != nul and not visit[G[node][0]]:
-        dfs(visit, G[node][0], i)
+    if G[node][0] != nul:
+        dfs(G[node][0], i)
     if i == 1:
         print(chr(node + A), end='')
-    if G[node][1] != nul and not visit[G[node][1]]:
-        dfs(visit, G[node][1], i)
+    if G[node][1] != nul:
+        dfs(G[node][1], i)
     if i == 2:
         print(chr(node + A), end='')
 
@@ -22,6 +21,5 @@ for _ in range(N):
     G[ord(P) - A].append(ord(CL) - A)
     G[ord(P) - A].append(ord(CR) - A)
 for i in range(3):
-    visited = [0] * N
-    dfs(visited, 0, i)
+    dfs(0, i)
     print()
