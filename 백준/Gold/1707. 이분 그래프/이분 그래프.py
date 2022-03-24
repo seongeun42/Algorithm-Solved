@@ -1,4 +1,3 @@
-from collections import deque
 import sys
 sys.setrecursionlimit(10**7)
 input = sys.stdin.readline
@@ -11,19 +10,6 @@ def dfs(node, color):
                 return "NO"
         elif visited[n] == color:
             return "NO"
-    return "YES"
-
-def bfs(start):
-    q = deque([[start, 1]])
-    visited[start] = 1
-    while q:
-        node, color = q.popleft()
-        for n in G[node]:
-            if not visited[n]:
-                visited[n] = -color
-                q.append([n, -color])
-            elif visited[n] == color:
-                return "NO"
     return "YES"
 
 K = int(input())
@@ -39,7 +25,6 @@ for _ in range(K):
     for i in range(1, V + 1):
         if not visited[i]:
             if dfs(i, 1) == "NO":
-            # if bfs(i) == "NO":
                 ans = 0
                 break
     print("YES" if ans else "NO")
