@@ -15,11 +15,10 @@ int	main()
 	{
 		cin >> n;
 		
-		int dp[2][100001];
+		int dp[2][100001] = { 0 };
 		for (int i = 0; i < 2; i++)
 			for (int j = 1; j <= n; j++)
 				cin >> dp[i][j];
-    dp[0][0] = dp[1][0] = 0;
       
 		for (int i = 2; i <= n; i++)
 		{
