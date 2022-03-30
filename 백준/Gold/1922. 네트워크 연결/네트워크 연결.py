@@ -9,7 +9,10 @@ def find_root(node):
 def union(n1, n2):
     n1 = find_root(n1)
     n2 = find_root(n2)
-    R[n1] = n2
+    if n1 < n2:
+        R[n2] = n1
+    else:
+        R[n1] = n2
 
 N = int(input())
 M = int(input())
