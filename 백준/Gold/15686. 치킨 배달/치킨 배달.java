@@ -2,12 +2,12 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static boolean[] open;
     static String[] str;
     static int n, m;
     static int res = Integer.MAX_VALUE;
     static List<Integer[]> home = new ArrayList<>();
     static List<Integer[]> chik = new ArrayList<>();
-    static Deque<Integer> open = new ArrayDeque<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,6 +26,7 @@ public class Main {
             }
         }
 
+        open = new boolean[chik.size()];
         solve(0, 0);
         System.out.println(res);
     }
@@ -34,11 +35,12 @@ public class Main {
         if (dep == m) {
             int total = 0;
             for (Integer[] h : home) {
-                Iterator iter = open.iterator();
                 int min_v = Integer.MAX_VALUE;
-                while (iter.hasNext()) {
-                    Integer[] c = chik.get((int)iter.next());
-                    min_v = Math.min(min_v, Math.abs(h[0] - c[0]) + Math.abs(h[1] - c[1]));
+                for (int i = 0; i < chik.size(); i++) {
+                    if (open[i]) {
+                        Integer[] c = chik.get(i);
+                        min_v = Math.min(min_v, Math.abs(h[0] - c[0]) + Math.abs(h[1] - c[1]));
+                    }
                 }
                 total += min_v;
                 if (res <= total)
@@ -48,9 +50,9 @@ public class Main {
         }
 
         for (int i = idx; i < chik.size(); i++) {
-            open.addLast(i);
+            open[i] = true;
             solve(i + 1, dep + 1);
-            open.removeLast();
+            open[i] = false;
         }
     }
 }
