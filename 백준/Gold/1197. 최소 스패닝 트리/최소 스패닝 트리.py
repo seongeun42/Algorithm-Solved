@@ -3,8 +3,8 @@ input = sys.stdin.readline
 
 def find_root(node):
     if R[node] != node:
-        return find_root(R[node])
-    return node
+        R[node] = find_root(R[node])
+    return R[node]
 
 def union(n1, n2):
     n1 = find_root(n1)
