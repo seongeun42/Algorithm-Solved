@@ -1,14 +1,19 @@
 def solution(n, lost, reserve):
-    lo = sorted(list(set(lost) - set(reserve)), reverse=True)
-    re = sorted(list(set(reserve) - set(lost)), reverse=True)
+    # 중복 제거하고 정렬
+    lo = sorted(list(set(lost) - set(reserve)))
+    re = sorted(list(set(reserve) - set(lost)))
     answer = n - len(lo)
     i = 0
     for v in lo:
         while i < len(re):
-            if re[i] < v - 1:
+            # 여벌 학생 번호가 도난 학생보다 2 이상 크면 패스
+            if re[i] > v + 1:
                 break
+            # 인덱스 미리 증가
             i += 1
+            # 여벌 학생과 도난 학생의 차가 1 이하면
             if abs(v - re[i - 1]) <= 1:
+                # ans 증가시키고 다음 도난 학생 확인하러 감
                 answer += 1
                 break
     return answer
