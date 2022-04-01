@@ -1,0 +1,14 @@
+def solution(n, lost, reserve):
+    lo = sorted(list(set(lost) - set(reserve)), reverse=True)
+    re = sorted(list(set(reserve) - set(lost)), reverse=True)
+    answer = n - len(lo)
+    i = 0
+    for v in lo:
+        while i < len(re):
+            if re[i] < v - 1:
+                break
+            i += 1
+            if abs(v - re[i - 1]) <= 1:
+                answer += 1
+                break
+    return answer
