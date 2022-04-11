@@ -1,23 +1,23 @@
-def backtrack(pre, visit, last, dep, total):
+def backtrack(now, total, start):
     global res
-    if dep == N - 1:
-        if C[pre][last]:
-            res = min(res, total + C[pre][last])
+    if res < total:
         return
-    for i in range(N):
-        if not visit[i] and C[pre][i] and i != last:
-            visit[i] = 1
-            backtrack(i, visit, last, dep + 1, total + C[pre][i])
-            visit[i] = 0
+    if sum(visit) == N:
+        if C[now][start]:
+            res = min(res, total + C[now][start])
+        return
+    for next in range(N):
+        if not visit[next] and C[now][next]:
+            visit[next] = 1
+            backtrack(next, total + C[now][next], start)
+            visit[next] = 0
 
 N = int(input())
 C = [[*map(int, input().split())] for _ in range(N)]
 res = 1e9
+visit = [0] * N
 for i in range(N):
-    for j in range(N):
-        if i == j or not C[j][i]:
-            continue
-        visit = [0] * N
-        visit[i] = 1
-        backtrack(i, visit, j, 1, C[j][i])
+    visit[i] = 1
+    backtrack(i, 0, i)
+    visit[i] = 0
 print(res)
