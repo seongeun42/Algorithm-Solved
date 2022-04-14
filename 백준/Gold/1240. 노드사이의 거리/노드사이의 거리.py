@@ -1,20 +1,19 @@
-from collections import deque
 import sys
 input = sys.stdin.readline
 
-def bfs(start, end):
-    q = deque([start])
-    visit[start] = 1
-    while q:
-        node = q.popleft()
-        if node == end:
-            break
-        for n, w in G[node]:
-            if not visit[n]:
-                visit[n] = visit[node] + w
-                q.append(n)
+def dfs(node, dist, end):
+    global flag
+    visit[node] = dist
+    if node == end:
+        flag = 1
+        return
+    for n, w in G[node]:
+        if not visit[n]:
+            dfs(n, dist + w, end)
+        if flag: return
 
 N, M = map(int, input().split())
+
 G = [[] for _ in range(N + 1)]
 for _ in range(N - 1):
     n1, n2, w = map(int, input().split())
@@ -24,5 +23,6 @@ for _ in range(N - 1):
 for _ in range(M):
     visit = [0] * (N + 1)
     s, e = map(int, input().split())
-    bfs(s, e)
+    flag = 0
+    dfs(s, 1, e)
     print(visit[e] - 1)
