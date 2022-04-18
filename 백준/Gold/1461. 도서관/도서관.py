@@ -1,21 +1,11 @@
 N, M = map(int, input().split())
-left, right = [], []
-for v in [*map(int, input().split())]:
-    if v < 0:
-        left.append(abs(v))
-    else:
-        right.append(v)
-left.sort(reverse=True)
-right.sort(reverse=True)
-res = 0
+loca = [*map(int, input().split())]
+left = sorted([abs(v) for v in loca if v < 0], reverse=True)
+right = sorted([v for v in loca if v > 0], reverse=True)
+dist = []
 for i in range(0, len(left), M):
-    res += left[i] * 2
+    dist.append(left[i])
 for i in range(0, len(right), M):
-    res += right[i] * 2
-if left and right:
-    res -= left[0] if left[0] > right[0] else right[0]
-elif left:
-    res -= left[0]
-elif right:
-    res -= right[0]
-print(res)
+    dist.append(right[i])
+dist.sort()
+print(dist.pop() + sum(dist) * 2)
