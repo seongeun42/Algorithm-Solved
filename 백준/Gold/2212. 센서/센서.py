@@ -1,0 +1,5 @@
+N = int(input())
+K = int(input())
+S = sorted([*map(int, input().split())])
+dist = sorted([S[i] - S[i - 1] for i in range(1, N)])
+print(sum(dist[:N-K]))
