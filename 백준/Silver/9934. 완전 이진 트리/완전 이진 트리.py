@@ -1,9 +1,9 @@
-def recur(dep, pnode, s, e):
+def recur(dep, m, s, e):
     if dep == K:
         return
-    level[dep].append(I[pnode])
-    recur(dep + 1, (s + pnode - 1) // 2, s, pnode - 1)
-    recur(dep + 1, (pnode + e + 1) // 2, pnode + 1, e)
+    level[dep].append(I[m])
+    recur(dep + 1, (s + m - 1) // 2, s, m - 1)
+    recur(dep + 1, (m + e + 1) // 2, m + 1, e)
 
 K = int(input())
 I = [*map(int, input().split())]
