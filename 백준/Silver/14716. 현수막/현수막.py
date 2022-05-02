@@ -1,16 +1,6 @@
 from _collections import deque
 import sys
-sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
-
-def dfs(r, c):
-    visited[r][c] = 1
-    for i in range(8):
-        nr, nc = r + dy[i], c + dx[i]
-        if 0 <= nr < M and 0 <= nc < N:
-            if plan[nr][nc] == 1 and not visited[nr][nc]:
-                dfs(nr, nc)
-    return 1
 
 def bfs(r, c):
     q = deque([[r, c]])
@@ -34,5 +24,5 @@ cnt = 0
 for i in range(M):
     for j in range(N):
         if plan[i][j] == 1 and not visited[i][j]:
-            cnt += dfs(i, j)
+            cnt += bfs(i, j)
 print(cnt)
