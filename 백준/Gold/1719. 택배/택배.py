@@ -9,19 +9,15 @@ for _ in range(M):
     if Time < G[A - 1][B - 1]:
         G[A - 1][B - 1] = Time
         G[B - 1][A - 1] = Time
-        res[A - 1][B - 1] = [A, B]
-        res[B - 1][A - 1] = [B, A]
-        
+        res[A - 1][B - 1] = B
+        res[B - 1][A - 1] = A
+
 for m in range(N):
     for i in range(N):
         for j in range(N):
-            if i == j:
-                res[i][j] = '-'
-            elif G[i][j] > G[i][m] + G[m][j]:
+            if i != j and G[i][j] > G[i][m] + G[m][j]:
                 G[i][j] = G[i][m] + G[m][j]
-                res[i][j] = res[i][m] + res[m][j][1:]
-                
-for i in range(N):
-    for j in range(N):
-        print('-' if i == j else res[i][j][1], end=' ')
-    print()
+                res[i][j] = res[i][m]
+
+for v in res:
+    print(*v)
