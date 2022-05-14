@@ -1,0 +1,37 @@
+def solution(numbers, hand):
+    answer = ''
+    
+    loca = {}
+    num = 1
+    for i in range(3):
+        for j in range(3):
+            loca[num] = [i, j]
+            num += 1
+    loca[0]  = [3, 1]
+    left, right = [3, 0], [3, 2]
+    
+    for v in numbers:
+        if v in [1, 4, 7]:
+            answer += 'L'
+            left = loca[v]
+        elif v in [3, 6, 9]:
+            answer += 'R'
+            right = loca[v]
+        else:
+            l = abs(loca[v][0] - left[0]) + abs(loca[v][1] - left[1])
+            r = abs(loca[v][0] - right[0]) + abs(loca[v][1] - right[1])
+            if l == r:
+                if hand == 'left':
+                    answer += 'L'
+                    left = loca[v]
+                else:
+                    answer += 'R'
+                    right = loca[v]
+            elif l < r:
+                answer += 'L'
+                left = loca[v]
+            else:
+                answer += 'R'
+                right = loca[v]
+            
+    return answer
