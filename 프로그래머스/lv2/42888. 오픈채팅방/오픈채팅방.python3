@@ -1,0 +1,20 @@
+def solution(record):
+    answer = []
+    log = []
+    mem = {}
+    for s in record:
+        s = s.split()
+        if s[0] == "Leave":
+            log.append([1, s[1]])
+            continue
+        elif s[0] == "Enter":
+            log.append([0, s[1]])
+        mem[s[1]] = s[2]
+        
+    for cmd, uid in log:
+        if cmd == 0:
+            answer.append(mem[uid] + "님이 들어왔습니다.")
+        else:
+            answer.append(mem[uid] + "님이 나갔습니다.")
+    
+    return answer
