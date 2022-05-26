@@ -1,0 +1,7 @@
+def solution(lottos, win_nums):
+    fix = len(set(lottos) & set(win_nums))
+    pick = lottos.count(0)
+    answer = []
+    answer.append(6 if fix + pick < 2 else 7 - (fix + pick))
+    answer.append(6 if fix < 2 else 7 - fix)
+    return answer
