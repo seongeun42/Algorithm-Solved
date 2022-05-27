@@ -1,7 +1,7 @@
 import heapq
 def solution(scoville, K):
-    if sum(scoville) == 0:
-        return -1
+#    if sum(scoville) == 0:
+#        return -1
     heapq.heapify(scoville)
     answer = 0
     while scoville[0] < K:
