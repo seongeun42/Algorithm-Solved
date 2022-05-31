@@ -1,6 +1,6 @@
 def solution(line):
     answer = []
-    arr = []
+    arr = set()
     n = len(line)
     for i in range(n):
         a1, b1, c1 = line[i]
@@ -11,8 +11,7 @@ def solution(line):
                 y = (c1 * a2 - a1 * c2) / (a1 * b2 - a2 * b1)
                 if x == int(x) and y == int(y):
                     x, y = int(x), int(y)
-                    if (x, y) not in arr:
-                        arr.append((x, y))
+                    arr.add((x, y))
     xy = list(zip(*arr))
     maxx, minx, maxy, miny = max(xy[0]), min(xy[0]), max(xy[1]), min(xy[1])
     star = [['.'] * (abs(maxx - minx) + 1) for _ in range(abs(maxy - miny) + 1)]
