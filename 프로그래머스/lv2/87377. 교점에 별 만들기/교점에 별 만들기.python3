@@ -1,0 +1,25 @@
+def solution(line):
+    answer = []
+    arr = []
+    n = len(line)
+    for i in range(n):
+        a1, b1, c1 = line[i]
+        for j in range(i + 1, n):
+            a2, b2, c2 = line[j]
+            if a1 * b2 - a2 * b1:
+                x = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1)
+                y = (c1 * a2 - a1 * c2) / (a1 * b2 - a2 * b1)
+                if x == int(x) and y == int(y):
+                    x, y = int(x), int(y)
+                    if (x, y) not in arr:
+                        arr.append((x, y))
+    xy = list(zip(*arr))
+    maxx, minx, maxy, miny = max(xy[0]), min(xy[0]), max(xy[1]), min(xy[1])
+    star = [['.'] * (abs(maxx - minx) + 1) for _ in range(abs(maxy - miny) + 1)]
+    for cx, cy in arr:
+        nx = abs(minx - cx)
+        ny = abs(maxy - cy)
+        star[ny][nx] = '*'
+    for s in star:
+        answer.append(''.join(s))
+    return answer
