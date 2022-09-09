@@ -1,23 +1,16 @@
-from collections import defaultdict
-
 def solution(id_list, report, k):
-    answer = []
-    reportList = { id: set() for id in id_list }
-    user = defaultdict(int)
+    reportList = { id: [] for id in id_list }
+    user = { id: 0 for id in id_list }
     
     # id 별 신고자 목록
-    for i in range(len(report)):
-        reporter, reported = report[i].split()
-        reportList[reported].add(reporter)
+    for s in set(report):
+        reporter, reported = s.split()
+        reportList[reported].append(reporter)
     
     # 신고 메일 카운트
-    for u, s in reportList.items():
-        if len(s) >= k:
-            for r in s:
+    for u, l in reportList.items():
+        if len(l) >= k:
+            for r in l:
                 user[r] += 1
-                
-    # answer 배열 만들기
-    for id in id_list:
-        answer.append(user[id])
         
-    return answer
+    return list(user.values())
