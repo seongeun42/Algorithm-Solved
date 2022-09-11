@@ -1,9 +1,6 @@
 class Solution {
     public int solution(int[] numbers, int target) {
-        int answer = 0;
-        answer += dfs(numbers, target, -numbers[0], 1);
-        answer += dfs(numbers, target, numbers[0], 1);
-        return answer;
+        return dfs(numbers, target, 0, 0);
     }
     
     public int dfs(int[] numbers, int target, int hap, int dep) {
