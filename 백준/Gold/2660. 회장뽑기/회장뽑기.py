@@ -4,17 +4,15 @@ input = sys.stdin.readline
 
 def bfs(s):
     visited = [0] * (n + 1)
-    q = deque([(s, 0)])
+    q = deque([s])
     visited[s] = 1
-    score = 0
     while q:
-        node, cnt = q.popleft()
-        score = max(score, cnt)
+        node = q.popleft()
         for next in G[node]:
             if visited[next] == 0:
-                q.append((next, cnt + 1))
-                visited[next] = 1
-    return score
+                q.append(next)
+                visited[next] = visited[node] + 1
+    return max(visited) - 1
 
 n = int(input())
 G = [[] for _ in range(n + 1)]
@@ -24,13 +22,15 @@ while 1:
     G[a].append(b)
     G[b].append(a)
 
-scores = []
+score = 50
+candi = []
 for i in range(1, n + 1):
-    scores.append((i, bfs(i)))
+    s = bfs(i)
+    if s < score:
+        score = s
+        candi = [i]
+    elif s == score:
+        candi.append(i)
 
-scores.sort(key=lambda x: (x[1], x[0]))
-minV = scores[0][1]
-scores = [v for v in scores if v[1] == minV]
-
-print(minV, len(scores))
-print(*[v[0] for v in scores])
+print(score, len(candi))
+print(*candi)
