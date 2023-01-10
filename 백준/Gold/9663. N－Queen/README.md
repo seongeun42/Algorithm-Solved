@@ -1,4 +1,4 @@
-# [Gold V] N-Queen - 9663 
+# [Gold IV] N-Queen - 9663 
 
 [문제 링크](https://www.acmicpc.net/problem/9663) 
 
