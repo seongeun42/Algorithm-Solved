@@ -1,9 +1,10 @@
-// 줄어들지 않아
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         long[][] dp = new long[65][10];
         for (int i = 0; i < 10; i++) {
@@ -16,9 +17,9 @@ public class Main {
             }
         }
 
-        int t = sc.nextInt();
+        int t = Integer.parseInt(br.readLine());
         for (int i = 0; i < t; i++) {
-            int n = sc.nextInt();
+            int n = Integer.parseInt(br.readLine());
             System.out.println(dp[n][9]);
         }
     }
