@@ -1,3 +1,3 @@
 -- 코드를 입력하세요
-SELECT count(*) count
-FROM (SELECT distinct NAME FROM ANIMAL_INS WHERE NAME IS NOT NULL) A
+SELECT count(distinct NAME) count
+FROM ANIMAL_INS
