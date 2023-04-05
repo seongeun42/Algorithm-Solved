@@ -1,0 +1,6 @@
+-- 코드를 입력하세요
+SELECT hour(DATETIME) HOUR, count(*) COUNT
+FROM ANIMAL_OUTS
+WHERE hour(DATETIME) > 8 and hour(DATETIME) < 20
+GROUP BY 1
+ORDER BY 1
