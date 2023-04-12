@@ -7,7 +7,7 @@ while s <= e:
     if mid == 0: break
     cnt = sum([l // mid for l in snack])
     if cnt >= m:
-        res = max(res, mid)
+        res = mid
         s = mid + 1
     else:
         e = mid - 1
