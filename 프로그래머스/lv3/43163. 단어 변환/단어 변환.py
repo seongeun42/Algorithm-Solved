@@ -19,7 +19,19 @@ def bfs(begin, target, words):
                 visit[i] = 1
                 q.append((words[i], dep + 1))
     return 0
+
+def dfs(word, target, words, visit, dep):
+    if diff(word, target) == 1:
+        return dep + 1
+    ans = 0
+    for i in range(len(words)):
+        if not visit[i] and diff(word, words[i]) == 1:
+            visit[i] = 1
+            ans = dfs(words[i], target, words, visit, dep + 1)
+    return ans
     
 def solution(begin, target, words):
     if target not in words: return 0
-    return bfs(begin, target, words)
+    visit = [0] * len(words)
+    return dfs(begin, target, words, visit, 0)
+    # return bfs(begin, target, words)
