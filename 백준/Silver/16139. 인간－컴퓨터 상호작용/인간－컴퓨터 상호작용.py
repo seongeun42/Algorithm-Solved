@@ -1,13 +1,13 @@
 import sys
 input = sys.stdin.readline
 
-s = input().strip()
+s = input().rstrip()
 q = int(input())
-dp = [[0] * 28 for _ in range(len(s))]
+dp = [[0] * 26 for _ in range(len(s))]
 a = ord('a')
 dp[0][ord(s[0]) - a] = 1
 for i in range(1, len(s)):
-    for j in range(28):
+    for j in range(26):
         dp[i][j] = dp[i - 1][j]
     dp[i][ord(s[i]) - a] += 1
 for _ in range(q):
