@@ -8,15 +8,19 @@ def find_root(R, n):
 
 def cal(R, P):
     val = 0
+    chk = 0
     for a, b, c in P:
         ar = find_root(R, a)
         br = find_root(R, b)
         if ar != br:
             val += not c
+            chk += 1
             if ar < br:
                 R[br] = ar
             else:
                 R[ar] = br
+        if chk == n:
+            break
     return val ** 2
 
 n, m = map(int, input().split())
