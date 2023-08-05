@@ -24,6 +24,7 @@ def solve():
     hq = []
     for l in live:
         heapq.heappush(hq, (0, l))
+        arr[l] = 0
     dijkstra(hq, arr, G)
     ans = [0, 0]
     for i in range(1, N + 1):
