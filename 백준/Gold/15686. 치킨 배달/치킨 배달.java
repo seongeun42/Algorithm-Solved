@@ -2,23 +2,20 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static boolean[] open;
-    static String[] str;
-    static int n, m;
     static int res = Integer.MAX_VALUE;
-    static List<Integer[]> home = new ArrayList<>();
-    static List<Integer[]> chik = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        str = br.readLine().split(" ");
-        n = Integer.parseInt(str[0]);
-        m = Integer.parseInt(str[1]);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        List<Integer[]> home = new ArrayList<>();
+        List<Integer[]> chik = new ArrayList<>();
         int[][] map = new int[n][n];
         for (int i = 0; i < n; i++) {
-            str = br.readLine().split(" ");
+            st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
-                map[i][j] = Integer.parseInt(str[j]);
+                map[i][j] = Integer.parseInt(st.nextToken());
                 if (map[i][j] == 1)
                     home.add(new Integer[]{i, j});
                 else if (map[i][j] == 2)
@@ -26,12 +23,12 @@ public class Main {
             }
         }
 
-        open = new boolean[chik.size()];
-        solve(0, 0);
+        boolean[] open = new boolean[chik.size()];
+        solve(0, 0, n, m, home, chik, open);
         System.out.println(res);
     }
-
-    public static void solve(int idx, int dep) {
+   
+    public static void solve(int idx, int dep, int n, int m, List<Integer[]> home, List<Integer[]> chik, boolean[] open) {
         if (dep == m) {
             int total = 0;
             for (Integer[] h : home) {
@@ -51,7 +48,7 @@ public class Main {
 
         for (int i = idx; i < chik.size(); i++) {
             open[i] = true;
-            solve(i + 1, dep + 1);
+            solve(i + 1, dep + 1, n, m, home, chik, open);
             open[i] = false;
         }
     }
