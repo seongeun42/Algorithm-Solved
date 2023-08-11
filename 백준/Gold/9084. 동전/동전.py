@@ -13,6 +13,6 @@ def solve():
             dp[c] += 1
             for m in range(c + 1, M + 1):
                 dp[m] += dp[m - c]
-        print(dp[m])
+        print(dp[M])
 
 solve()
