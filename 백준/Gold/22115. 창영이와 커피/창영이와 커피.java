@@ -12,9 +12,9 @@ public class Main {
         Arrays.fill(dp, 101);
         dp[0] = 0;
         st = new StringTokenizer(br.readLine());
-        int all = 0;
+        int c, all = 0;
         for (int i = 0; i < N; i++) {
-            int c = Integer.parseInt(st.nextToken());
+            c = Integer.parseInt(st.nextToken());
             for (int k = Math.min(all + c, K); k >= c; k--) {
                 if (dp[k] > dp[k - c] + 1)
                     dp[k] = dp[k - c] + 1;
