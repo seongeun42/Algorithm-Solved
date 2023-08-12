@@ -12,30 +12,32 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
         Deque<int[]> q = new ArrayDeque<>();
+        PriorityQueue<int[]> not = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[2] - o2[2];
+            }
+        });
         int N = readInt(st), T = readInt(st), W = readInt(st);
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             q.addLast(new int[] { readInt(st), readInt(st), 0 });
         }
 
-        List<int[]> temp = new ArrayList<>();
         int M = Integer.parseInt(br.readLine());
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            temp.add(new int[] { readInt(st), readInt(st), readInt(st) });
+            not.offer(new int[] { readInt(st), readInt(st), readInt(st) });
         }
-        temp.sort((o1, o2) -> o1[2] - o2[2]);
-        Deque<int[]> not = new ArrayDeque<>(temp);
 
         int t = 0;
         while (t < W) {
             int[] cur = q.poll();
-            for (int i = 0; i < T && cur[1] > 0 && t < W; i++) {
-                t++;
+            for (int i = 0; i < T && cur[1] > 0 && t++ < W; i++) {
                 cur[1]--;
                 sb.append(cur[0]).append("\n");
-                if (!not.isEmpty() && t == not.peekFirst()[2]) {
-                    q.addLast(not.pollFirst());
+                if (!not.isEmpty() && t == not.peek()[2]) {
+                    q.addLast(not.poll());
                 }
             }
             if (cur[1] > 0) {
