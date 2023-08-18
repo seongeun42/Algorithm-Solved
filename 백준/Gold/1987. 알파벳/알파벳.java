@@ -23,7 +23,6 @@ public class Main {
     }
 
     static void dfs(int cx, int cy, int cnt) {
-        if (cnt > 26) return;
         if (ans < cnt)
             ans = cnt;
         alpa[map[cy].charAt(cx) - 'A'] = true;
