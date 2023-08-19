@@ -32,34 +32,34 @@ public class Main {
 	}
 	
 	static void rotate(int[][] desc, int[][] src, int sr, int er, int sc, int ec, int R) {
-		int rcnt = er - sr;
-		int ccnt = ec - sc;
+		int hcnt = (er - sr) * 2 + (ec - sc) * 2 - 4;
+		R %= hcnt;
 		
-		if (rcnt == 1) R %= ccnt;
-		else if (ccnt == 1) R %= rcnt;
-		else R %= (rcnt * 2 + ccnt * 2 - 4);
-		
-		List<Integer> arr = new ArrayList<>();
+		Deque<Integer> dq = new ArrayDeque<>();
 		for (int i = sc; i < ec; i++)
-			arr.add(src[sr][i]);
+			dq.offerLast(src[sr][i]);
 		for (int i = sr + 1; i < er; i++)
-			arr.add(src[i][ec - 1]);
+			dq.offerLast(src[i][ec - 1]);
 		for (int i = ec - 2; i >= sc; i--)
-			arr.add(src[er - 1][i]);
+			dq.offerLast(src[er - 1][i]);
 		for (int i = er - 2; i > sr; i--)
-			arr.add(src[i][sc]);
+			dq.offerLast(src[i][sc]);
 		
-		Collections.rotate(arr, -R);
-		
-		int mCnt = 0;
+		if (R <= hcnt - R)
+			for (int i = 0; i < R; i++)
+				dq.offerLast(dq.pollFirst());
+		else
+			for (int i = 0; i < hcnt - R; i++)
+				dq.offerFirst(dq.pollLast());
+
 		for (int i = sc; i < ec; i++)
-			desc[sr][i] = arr.get(mCnt++);
+			desc[sr][i] = dq.pollFirst();
 		for (int i = sr + 1; i < er; i++)
-			desc[i][ec - 1] = arr.get(mCnt++);
+			desc[i][ec - 1] = dq.pollFirst();
 		for (int i = ec - 2; i >= sc; i--)
-			desc[er - 1][i] = arr.get(mCnt++);
+			desc[er - 1][i] = dq.pollFirst();
 		for (int i = er - 2; i > sr; i--)
-			desc[i][sc] = arr.get(mCnt++);
+			desc[i][sc] = dq.pollFirst();
 	}
 	
 }
