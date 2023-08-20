@@ -1,39 +1,50 @@
-import sys, heapq
+import sys
 input = sys.stdin.readline
 
-def prim(G, R, C):
-    hq = G[0]
-    heapq.heapify(hq)
-    visited = [0] * (R * C)
-    visited[0] = 1
-    res = 0
-    while hq:
-        w, e = heapq.heappop(hq)
-        if not visited[e]:
-            visited[e] = 1
-            res += w
-            for nw, ne in G[e]:
-                if not visited[ne]:
-                    heapq.heappush(hq, (nw, ne))
-    return res
+def find_root(node, root):
+    if root[node] != node:
+        root[node] = find_root(root[node], root)
+    return root[node]
 
 def solve():
     T = int(input())
     for _ in range(T):
         R, C = map(int, input().split())
-        G = [[] for _ in range(R * C)]
+        root = [i for i in range(R * C)]
+        ans = 0
+        E = []
         for i in range(R):
             c = [*map(int, input().split())]
             for j in range(C - 1):
-                n = i * C + j
-                G[n].append((c[j], n + 1))
-                G[n + 1].append((c[j], n))
+                a = i * C + j
+                b = a + 1
+                ar = find_root(a, root)
+                br = find_root(b, root)
+                if c[j] == 1 and ar != br:
+                    root[max(ar, br)] = min(ar, br)
+                    ans += 1
+                elif c[j] != 1:
+                    E.append((c[j], a, b))
         for i in range(R - 1):
             c = [*map(int, input().split())]
             for j in range(C):
-                n = i * C + j
-                G[n].append((c[j], n + C))
-                G[n + C].append((c[j], n))
-        print(prim(G, R, C))
+                a = i * C + j
+                b = a + C
+                ar = find_root(a, root)
+                br = find_root(b, root)
+                if c[j] == 1 and ar != br:
+                    root[max(ar, br)] = min(ar, br)
+                    ans += 1
+                elif c[j] != 1:
+                    E.append((c[j], a, b))
+        E.sort()
+        for w, a, b in E:
+            if len(set(root)) == 1: break
+            ar = find_root(a, root)
+            br = find_root(b, root)
+            if ar != br:
+                ans += w
+                root[max(ar, br)] = min(ar, br)
+        print(ans)
 
 solve()
