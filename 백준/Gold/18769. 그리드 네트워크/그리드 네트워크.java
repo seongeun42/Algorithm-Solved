@@ -10,34 +10,37 @@ public class Main {
         StringBuilder sb = new StringBuilder();
         StringTokenizer st;
         int T = Integer.parseInt(br.readLine());
-        for (int tc = 0; tc < T; tc++) {
+        while (T-- > 0) {
+            PriorityQueue<Edge> E = new PriorityQueue<>();
             st = new StringTokenizer(br.readLine());
             int R = readInt(st), C = readInt(st);
             int[] root = new int[R * C];
-            for (int i = 0; i < R * C; i++) root[i] = i;
-            Edge[] E = new Edge[(R - 1) * C + R * (C - 1)];
+            for (int i = 0; i < R * C; i++) {
+                root[i] = i;
+            }
             int cnt = 0;
             for (int i = 0; i < R; i++) {
                 st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < C - 1; j++) {
                     int n = i * C + j;
-                    E[cnt++] = new Edge(readInt(st), n, n + 1);
+                    E.add(new Edge(readInt(st), n, n + 1));
                 }
             }
             for (int i = 0; i < R - 1; i++) {
                 st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < C; j++) {
                     int n = i * C + j;
-                    E[cnt++] = new Edge(readInt(st), n, n + C);
+                    E.add(new Edge(readInt(st), n, n + C));
                 }
             }
-            Arrays.sort(E);
-            int ans = 0;
+            int all = 0, ans = 0;
             int aRoot, bRoot;
-            for (Edge e : E) {
+            while (!E.isEmpty() && all < R * C - 1) {
+                Edge e = E.poll();
                 aRoot = findRoot(e.a, root);
                 bRoot = findRoot(e.b, root);
                 if (aRoot != bRoot) {
+                    all++;
                     ans += e.w;
                     root[Math.max(aRoot, bRoot)] = Math.min(aRoot, bRoot);
                 }
