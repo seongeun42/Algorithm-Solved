@@ -14,38 +14,31 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int R = readInt(st), C = readInt(st);
             int[] root = new int[R * C];
-            for (int i = 0; i < R * C; i++) {
-                root[i] = i;
-            }
-            int[][] E = new int[(R - 1) * C + R * (C - 1)][3];
+            for (int i = 0; i < R * C; i++) root[i] = i;
+            Edge[] E = new Edge[(R - 1) * C + R * (C - 1)];
             int cnt = 0;
             for (int i = 0; i < R; i++) {
                 st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < C - 1; j++) {
                     int n = i * C + j;
-                    E[cnt++] = new int[] { readInt(st), n, n + 1 };
+                    E[cnt++] = new Edge(readInt(st), n, n + 1);
                 }
             }
             for (int i = 0; i < R - 1; i++) {
                 st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < C; j++) {
                     int n = i * C + j;
-                    E[cnt++] = new int[] { readInt(st), n, n + C };
+                    E[cnt++] = new Edge(readInt(st), n, n + C);
                 }
             }
-            Arrays.sort(E, new Comparator<int[]>() {
-                @Override
-                public int compare(int[] o1, int[] o2) {
-                    return o1[0] - o2[0];
-                }
-            });
+            Arrays.sort(E);
             int ans = 0;
             int aRoot, bRoot;
-            for (int[] e : E) {
-                aRoot = findRoot(e[1], root);
-                bRoot = findRoot(e[2], root);
+            for (Edge e : E) {
+                aRoot = findRoot(e.a, root);
+                bRoot = findRoot(e.b, root);
                 if (aRoot != bRoot) {
-                    ans += e[0];
+                    ans += e.w;
                     root[Math.max(aRoot, bRoot)] = Math.min(aRoot, bRoot);
                 }
             }
@@ -58,6 +51,21 @@ public class Main {
         if (root[node] != node)
             root[node] = findRoot(root[node], root);
         return root[node];
+    }
+
+    static class Edge implements Comparable<Edge> {
+        int w, a, b;
+
+        public Edge(int w, int a, int b) {
+            this.w = w;
+            this.a = a;
+            this.b = b;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return w - o.w;
+        }
     }
 
 }
