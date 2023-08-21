@@ -18,12 +18,6 @@ public class Main {
             G.get(a).add(b);
             degree[b]++;
         }
-        topology(N, degree, G, sb);
-        System.out.println(sb);
-    }
-
-
-    static void topology(int N, int[] degree, List<List<Integer>> G, StringBuilder sb) {
         Deque<Integer> q = new ArrayDeque<>();
         for (int i = 1; i < N + 1; i++) {
             if (degree[i] == 0)
@@ -38,6 +32,7 @@ public class Main {
                     q.add(nn);
             }
         }
+        System.out.println(sb);
     }
 
     static int readInt(StringTokenizer st) {
