@@ -1,26 +1,34 @@
 import sys, heapq
 input = sys.stdin.readline
 
-def prim(W, P):
-    res = 0
-    hq = []
-    for i in range(len(W)):
-        heapq.heappush(hq, (W[i], i))
-    visited = [0] * len(W)
-    while hq:
-        c, e = heapq.heappop(hq)
-        if not visited[e]:
-            visited[e] = 1
-            res += c
-            for i in range(len(W)):
-                if i != e and not visited[i]:
-                    heapq.heappush(hq, (P[e][i], i))
-    return res
+def find_root(n, R):
+    if R[n] != n:
+        R[n] = find_root(R[n], R)
+    return R[n]
 
 def solve():
     N = int(input())
-    W = [int(input()) for _ in range(N)]
-    P = [[*map(int, input().split())] for _ in range(N)]
-    print(prim(W, P))
+    E = []
+    for i in range(N):
+        E.append((N, i, int(input())))
+    for i in range(N):
+        l = [*map(int, input().split())]
+        for j in range(N):
+            if i == j: continue
+            E.append((i, j, l[j]))
+    E.sort(key=lambda x: x[2])
+    R = [i for i in range(N + 1)]
+    res = 0
+    cnt = 0
+    for s, e, c in E:
+        sr = find_root(s, R)
+        er = find_root(e, R)
+        if sr != er:
+            cnt += 1
+            res += c
+            R[max(sr, er)] = R[min(sr, er)]
+        if cnt == N:
+            break
+    print(res)
 
 solve()
