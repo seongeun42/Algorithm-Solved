@@ -10,11 +10,9 @@ public class Main {
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
 		int R = Integer.parseInt(st.nextToken());
-		int[][] arr = new int[N][M];
+		String[][] arr = new String[N][M];
 		for (int i = 0; i < N; i++) {
-			st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < M; j++)
-				arr[i][j] = Integer.parseInt(st.nextToken());
+			arr[i] = br.readLine().split(" ");
 		}
 		
 		st = new StringTokenizer(br.readLine());
@@ -47,35 +45,33 @@ public class Main {
 		System.out.println(sb);
 	}
 	
-	static void verti(int[][] arr, int n, int m) {
+	static void verti(String[][] arr, int n, int m) {
 		for (int i = 0; i < n / 2; i++) {
-			for (int j = 0; j < m; j++) {
-				int tmp = arr[i][j];
-				arr[i][j] = arr[n - i - 1][j];
-				arr[n - i - 1][j] = tmp;
-			}
+			String[] tmp = arr[i];
+			arr[i] = arr[n - i - 1];
+			arr[n - i - 1] = tmp;
 		}
 	}
 
-	static void horiz(int[][] arr, int n, int m) {
+	static void horiz(String[][] arr, int n, int m) {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m / 2; j++) {
-				int tmp = arr[i][j];
+				String tmp = arr[i][j];
 				arr[i][j] = arr[i][m - j - 1];
 				arr[i][m - j - 1] = tmp;
 			}
 		}
 	}
 	
-	static int[][] rot90(int[][] arr, int n, int m, boolean mode) {
-		int[][] after = new int[m][n];
-		if (mode) {
+	static String[][] rot90(String[][] arr, int n, int m, boolean mode) {
+		String[][] after = new String[m][n];
+		if (mode) { // 오른쪽
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < m; j++) {
 					after[j][n - i - 1] = arr[i][j];
 				}
 			}
-		} else {
+		} else { // 왼쪽
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < m; j++) {
 					after[m - j - 1][i] = arr[i][j];
@@ -85,9 +81,9 @@ public class Main {
 		return after;
 	}
 	
-	static int[][] moveSection(int[][] arr, int n, int m, boolean mode) {
-		int[][] after = new int[n][m];
-		if (mode) {
+	static String[][] moveSection(String[][] arr, int n, int m, boolean mode) {
+		String[][] after = new String[n][m];
+		if (mode) { // 시계
 			for (int i = 0; i < n / 2; i++) {
 				for (int j = 0; j < m / 2; j++) {
 					after[i][m / 2 + j] = arr[i][j];
@@ -96,7 +92,7 @@ public class Main {
 					after[i][j] = arr[n / 2 + i][j];
 				}
 			}
-		} else {
+		} else { // 반시계
 			for (int i = 0; i < n / 2; i++) {
 				for (int j = 0; j < m / 2; j++) {
 					after[i][j] = arr[i][m / 2 + j];
