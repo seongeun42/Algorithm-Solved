@@ -1,3 +1,6 @@
+import sys
+input = sys.stdin.readline
+
 N = int(input())
 xlist, ylist = [], []
 for _ in range(N):
