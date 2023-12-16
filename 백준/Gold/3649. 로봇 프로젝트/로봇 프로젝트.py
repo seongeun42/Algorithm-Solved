@@ -7,9 +7,6 @@ def solve():
             x = int(input()) * 10000000
             n = int(input())
             lego = sorted([int(input()) for _ in range(n)])
-            if n < 2:
-                print("danger")
-                continue
             s, e = 0, n - 1
             ans = "danger"
             while s < e:
