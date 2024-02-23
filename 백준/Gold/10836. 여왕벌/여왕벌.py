@@ -2,20 +2,22 @@ import sys
 input = sys.stdin.readline
 
 M, N = map(int, input().split())
-larva = [[1] * M for _ in range(M)]
 first = [0] * (2 * M - 1)
 for _ in range(N):
     zero, one, two = map(int, input().split())
-    for i in range(one):
-        first[zero + i] += 1
-    for i in range(two):
-        first[zero + one + i] += 2
-for i in range(len(first)):
-    y = 0 if i >= M else M - i - 1
-    x = i - M + 1 if i >= M else 0
-    larva[y][x] += first[i]
-for i in range(1, M):
-    for j in range(1, M):
-        larva[i][j] = max(larva[i - 1][j], larva[i - 1][j - 1], larva[i][j - 1])
-for i in range(M):
-    print(*larva[i])
+    idx = zero
+    flag = 1
+    if one > 0:
+        first[idx] += 1
+        idx += one
+        flag -= 1
+    if two > 0:
+        first[idx] += 1 + flag
+first[0] += 1
+for i in range(1, len(first)):
+    first[i] += first[i - 1]
+s = []
+for i in range(M, 2 * M - 1):
+    s.append(first[i])
+for i in range(M - 1, -1, -1):
+    print(first[i], *s)
