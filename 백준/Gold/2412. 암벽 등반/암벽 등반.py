@@ -4,7 +4,6 @@ input = sys.stdin.readline
 
 def bfs(T, xy):
     q = deque([(0, 0, 0)])
-    visit = set([(0, 0)])
     while q:
         cx, cy, cnt = q.popleft()
         if cy == T:
@@ -12,8 +11,8 @@ def bfs(T, xy):
         for i in range(-2, 3):
             for j in range(-2, 3):
                 nx, ny = cx + i, cy + j
-                if (nx, ny) in xy and (nx, ny) not in visit:
-                    visit.add((nx, ny))
+                if (nx, ny) in xy:
+                    xy.remove((nx, ny))
                     q.append((nx, ny, cnt + 1))
     return -1
 
