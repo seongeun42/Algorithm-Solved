@@ -1,0 +1,5 @@
+SELECT year(YM) "YEAR", round(avg(PM_VAL1), 2) "PM10", round(avg(PM_VAL2), 2) "PM2.5"
+FROM AIR_POLLUTION
+WHERE LOCATION2 = "수원"
+GROUP BY year(YM)
+ORDER BY YEAR
