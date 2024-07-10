@@ -1,7 +1,5 @@
-SELECT ID, ifnull(CHILD_COUNT, 0) CHILD_COUNT
-FROM ECOLI_DATA D left join (SELECT PARENT_ID, count(PARENT_ID) CHILD_COUNT
-                             FROM ECOLI_DATA
-                             GROUP BY PARENT_ID
-                             HAVING PARENT_ID is not null) C
+SELECT D.ID, count(C.PARENT_ID) CHILD_COUNT
+FROM ECOLI_DATA D left join ECOLI_DATA C
 ON D.ID = C.PARENT_ID
-ORDER BY ID
+GROUP BY D.ID
+ORDER BY D.ID
