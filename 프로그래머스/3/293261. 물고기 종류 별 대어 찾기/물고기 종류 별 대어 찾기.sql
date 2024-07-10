@@ -1,0 +1,6 @@
+SELECT ID, FISH_NAME, LENGTH
+FROM FISH_INFO I natural join FISH_NAME_INFO N
+WHERE (N.FISH_TYPE, LENGTH) in (SELECT FISH_TYPE, max(LENGTH) LENGTH
+                                FROM FISH_INFO
+                                GROUP BY FISH_TYPE)
+ORDER BY ID
