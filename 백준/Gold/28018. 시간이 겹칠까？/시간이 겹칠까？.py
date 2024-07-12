@@ -8,12 +8,11 @@ def solve():
         S, E = map(int, input().split())
         time[S] += 1
         time[E + 1] -= 1
-    cnt = [0] * 1000002
+    cnt = time[:]
     for i in range(1, 1000002):
-        cnt[i] += cnt[i - 1] + time[i]
+        cnt[i] += cnt[i - 1]
     Q = int(input())
     arr = [*map(int, input().split())]
-    for c in arr:
-        print(cnt[c])
+    print(*[cnt[c] for c in arr], sep="\n")
 
 solve()
