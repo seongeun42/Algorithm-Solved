@@ -1,4 +1,4 @@
-import sys, heapq
+import sys
 input = sys.stdin.readline
 
 def find_root(n, R):
@@ -8,17 +8,13 @@ def find_root(n, R):
 
 def solve():
     n = int(input())
-    proposals = []
-    for _ in range(n):
-        p, d = map(int, input().split())
-        heapq.heappush(proposals, (-p, d))
+    proposals = sorted([tuple(map(int, input().split())) for _ in range(n)], reverse=True)
     R = [i for i in range(10001)]
     ans = 0
-    while proposals:
-        p, d = heapq.heappop(proposals)
+    for p, d in proposals:
         r = find_root(d, R)
         if r > 0:
-            ans += -p
+            ans += p
             nxt = find_root(r - 1, R)
             R[r] = nxt
     print(ans)
