@@ -11,12 +11,13 @@ def solve():
         max_v = 0
         for hp, meso in boss:
             need = math.ceil(hp/d)
-            for t in range(900, 0, -1):
-                if d * t >= hp:
-                    if dp[t] < meso + dp[t - need]:
-                        dp[t] = meso + dp[t - need]
-                        if dp[t] > max_v:
-                            max_v = dp[t]
+            if 900 < need:
+                continue
+            for t in range(900, need - 1, -1):
+                if dp[t] < meso + dp[t - need]:
+                    dp[t] = meso + dp[t - need]
+                    if dp[t] > max_v:
+                        max_v = dp[t]
         ans.append(max_v)
     print(sum(sorted(ans, reverse=True)[:M]))
 
