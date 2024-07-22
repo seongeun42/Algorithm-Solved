@@ -16,8 +16,7 @@ def solve():
             for t in range(900, need - 1, -1):
                 if dp[t] < meso + dp[t - need]:
                     dp[t] = meso + dp[t - need]
-                    if dp[t] > max_v:
-                        max_v = dp[t]
+            max_v = max(dp)
         ans.append(max_v)
     print(sum(sorted(ans, reverse=True)[:M]))
 
