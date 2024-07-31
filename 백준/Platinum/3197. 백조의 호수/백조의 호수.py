@@ -5,26 +5,17 @@ input = sys.stdin.readline
 dr = [0, 1, 0, -1]
 dc = [1, 0, -1, 0]
 
-def find_root(rc, root):
-    if root[rc[0]][rc[1]] != rc:
-        root[rc[0]][rc[1]] = find_root(root[rc[0]][rc[1]], root)
-    return root[rc[0]][rc[1]]
+def find_root(n, root):
+    if root[n] != n:
+        root[n] = find_root(root[n], root)
+    return root[n]
 
 def union(one, two, root):
     ro = find_root(one, root)
     rt = find_root(two, root)
     if ro == rt:
         return
-    # 왼쪽상단으로 통일
-    if ro[0] < rt[0]:
-        root[rt[0]][rt[1]] = ro
-    elif ro[0] == rt[0]:
-        if ro[1] < rt[1]:
-            root[rt[0]][rt[1]] = ro
-        else:
-            root[ro[0]][ro[1]] = rt
-    else:
-        root[ro[0]][ro[1]] = rt
+    root[max(ro, rt)] = min(ro, rt)
 
 def init(lake, root):
     R, C = len(lake), len(lake[0])
@@ -43,7 +34,7 @@ def init(lake, root):
                     if 0 <= nr < R and 0 <= nc < C and not visited[nr][nc]:
                         visited[nr][nc] = 1
                         if lake[nr][nc] != 'X':
-                            root[nr][nc] = (i, j)
+                            root[nr * C + nc] = root[i * C + j]
                             q.append((nr, nc))
                         else:
                             edge.append((cr, cc))
@@ -52,13 +43,12 @@ def init(lake, root):
 def solve():
     R, C = map(int, input().split())
     lake = [list(input().rstrip()) for _ in range(R)]
-    root = [[] for _ in range(R)]
+    root = [i for i in range(R * C)]
     swan = []
     for i in range(R):
         for j in range(C):
-            root[i].append((i, j))
             if lake[i][j] == 'L':
-                swan.append((i, j))
+                swan.append(i * C + j)
     # root 초기화 & 첫날 녹는 빙판 배열
     edge = init(lake, root)
     # 빙판 녹기
@@ -75,12 +65,12 @@ def solve():
                 if 0 <= nr < R and 0 <= nc < C and not visited[nr][nc] and lake[nr][nc] == 'X':
                     visited[nr][nc] = 1
                     lake[nr][nc] = '.'
-                    root[nr][nc] = root[cr][cc]
+                    root[nr * C + nc] = root[cr * C + cc]
                     for dd in range(4):
                         nnr, nnc = nr + dr[dd], nc + dc[dd]
                         # 근처가 호수면 합치기
                         if 0 <= nnr < R and 0 <= nnc < C and lake[nnr][nnc] != 'X':
-                            union((nr, nc), (nnr, nnc), root)
+                            union(nr * C + nc, nnr * C + nnc, root)
                     next_edge.append((nr, nc))
         edge = next_edge
     print(ans)
