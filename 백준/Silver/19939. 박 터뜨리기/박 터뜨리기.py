@@ -1,5 +1,5 @@
 N, K = map(int, input().split())
-minimum = sum([i for i in range(1, K + 1)])
+minimum = (1 + K) * K // 2
 if N < minimum:
     print(-1)
 else:
