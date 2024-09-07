@@ -1,4 +1,3 @@
-from collections import deque
 import sys
 input = sys.stdin.readline
 
@@ -8,26 +7,16 @@ def solve():
     words = {}
     for _ in range(d):
         w = input().rstrip()
-        if len(w) in words:
-            words[len(w)].append(w)
-        else:
-            words[len(w)] = [w]
-    q = deque([first])
+        words[w] = False
+    words[first] = True
     ans = first
-    while q:
-        word: str = q.popleft()
-        if len(ans) < len(word):
-            ans = word
-        for w in words.get(len(word) + 1, []):
-            diff = 0
-            idx = 0
-            for i in range(len(w)):
-                if idx >= len(word) or w[i] != word[idx]:
-                    diff += 1
-                else:
-                    idx += 1
-            if diff == 1:
-                q.append(w)
+    for w in sorted(words.keys(), key=len):
+        for i in range(len(w)):
+            nw = w[:i] + w[i+1:]
+            if nw in words and words[nw]:
+                words[w] = True
+                if len(ans) < len(w):
+                    ans = w
     print(ans)
 
 solve()
