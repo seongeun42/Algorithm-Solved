@@ -1,20 +1,23 @@
 import sys, heapq
 input = sys.stdin.readline
 
+def add(P, L, problem, level):
+    problem[P] = L
+    if L in level:
+        minHQ, maxHQ = level[L]
+        heapq.heappush(minHQ, P)
+        heapq.heappush(maxHQ, -P)
+    else:
+        minHQ, maxHQ = [P], [-P]
+        level[L] = [minHQ, maxHQ]
+
 def solve():
     N = int(input())
     level = {}
     problem = {}
     for _ in range(N):
         P, L = map(int, input().split())
-        problem[P] = L
-        if L in level:
-            minHQ, maxHQ = level[L]
-            heapq.heappush(minHQ, P)
-            heapq.heappush(maxHQ, -P)
-        else:
-            minHQ, maxHQ = [P], [-P]
-            level[L] = [minHQ, maxHQ]
+        add(P, L, problem, level)
     M = int(input())
     remove = set()
     for _ in range(M):
@@ -39,16 +42,9 @@ def solve():
                         break
         elif cmd[0] == "add":
             p, l = int(cmd[1]), int(cmd[2])
-            problem[p] = l
             if p + l * 1000000 in remove:
                 remove.remove(p + l * 1000000)
-            if l in level:
-                minHQ, maxHQ = level[l]
-                heapq.heappush(minHQ, p)
-                heapq.heappush(maxHQ, -p)
-            else:
-                minHQ, maxHQ = [p], [-p]
-                level[l] = [minHQ, maxHQ]
+            add(p, l, problem, level)
         elif cmd[0] == "solved":
             target = int(cmd[1])
             remove.add(target + problem[target] * 1000000)
