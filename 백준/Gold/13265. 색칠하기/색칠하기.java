@@ -28,7 +28,8 @@ public class Main {
       String ans = "possible";
       for (int i = 1; i <= n; i++) {
         if (visited[i] == 0) {
-          if (!bfs(i, visited)) {
+          visited[i] = 1;
+          if (!dfs(i, visited)) {
             ans = "impossible";
             break;
           }
@@ -39,23 +40,18 @@ public class Main {
     System.out.println(sb);
   }
 
-  static boolean bfs(int start, int[] visited) {
-    Deque<Integer> q = new ArrayDeque<>();
-    q.add(start);
-    visited[start] = 1;
-    while (!q.isEmpty()) {
-      int cur = q.pollFirst();
-      ArrayList<Integer> nextNodes = G[cur];
-      for (Integer nxt : nextNodes) {
-        if (visited[nxt] == 0) {
-          visited[nxt] = -visited[cur];
-          q.addLast(nxt);
-        } else if (visited[nxt] == visited[cur]) {
-          return false;
-        }
+  static boolean dfs(int cur, int[] visited) {
+    boolean res = true;
+    ArrayList<Integer> nextNodes = G[cur];
+    for (Integer nxt : nextNodes) {
+      if (visited[nxt] == 0) {
+        visited[nxt] = -visited[cur];
+        res = dfs(nxt, visited);
+      } else if (visited[nxt] == visited[cur]) {
+        return false;
       }
     }
-    return true;
+    return res;
   }
 
 }
