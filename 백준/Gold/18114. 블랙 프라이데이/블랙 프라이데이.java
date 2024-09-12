@@ -9,31 +9,46 @@ public class Main {
     int N = Integer.parseInt(st.nextToken());
     int C = Integer.parseInt(st.nextToken());
     int[] w = new int[N];
-    Set<Integer> weight = new HashSet<>();
     st = new StringTokenizer(br.readLine());
     for (int i = 0; i < N; i++) {
       w[i] = Integer.parseInt(st.nextToken());
-      weight.add(w[i]);
       if (w[i] == C) {
         System.out.println(1);
         return;
       }
     }
     Arrays.sort(w);
-    for (int i = 0; i < N; i++) {
-      if (C - w[i] != w[i] && weight.contains(C - w[i])) {
+    int l = 0, r = N - 1;
+    while (l < r) {
+      if (w[l] + w[r] == C) {
         System.out.println(1);
         return;
-      }
-      for (int j = i + 1; j < N; j++) {
-        Integer diff = C - w[i] - w[j];
-        if (diff != w[i] && diff != w[j] && weight.contains(diff)) {
+      } else if (w[l] + w[r] > C) {
+        r--;
+      } else {
+        int diff = C - w[l] - w[r];
+        if (diff != w[l] && diff != w[r] && binarySearch(l, r, diff, w)) {
           System.out.println(1);
           return;
         }
+        l++;
       }
     }
     System.out.println(0);
+  }
+
+  static boolean binarySearch(int s, int e, int diff, int[] weight) {
+    while (s <= e) {
+      int mid = (s + e) / 2;
+      if (weight[mid] == diff)
+        return true;
+      if (weight[mid] < diff) {
+        s = mid + 1;
+      } else {
+        e = mid - 1;
+      }
+    }
+    return false;
   }
 
 }
