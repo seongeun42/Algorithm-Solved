@@ -1,7 +1,7 @@
 import sys, heapq
 input = sys.stdin.readline
 
-def dijkstra(V, G, W, S):
+def dijkstra(V, G, S):
     dp = [1e9] * (V + 1)
     hq = []
     for s in S:
@@ -11,8 +11,8 @@ def dijkstra(V, G, W, S):
         cw, cn = heapq.heappop(hq)
         if dp[cn] < cw:
             continue
-        for nn in G[cn]:
-            w = cw + W[(cn, nn)]
+        for nn, nw in G[cn].items():
+            w = cw + nw
             if w < dp[nn]:
                 dp[nn] = w
                 heapq.heappush(hq, (w, nn))
@@ -20,30 +20,25 @@ def dijkstra(V, G, W, S):
 
 def solve():
     V, E = map(int, input().split())
-    G = [[] for _ in range(V + 1)]
-    W = {}
+    G = [{} for _ in range(V + 1)]
     for _ in range(E):
         u, v, w = map(int, input().split())
-        G[u].append(v)
-        G[v].append(u)
-        if (u, v) not in W or W[(u, v)] > w:
-            W[(u, v)] = w
-            W[(v, u)] = w
+        if v in G[u]:
+            G[u][v] = G[v][u] = min(G[v][u], w)
+        else:
+            G[u][v] = G[v][u] = w
     M, x = map(int, input().split())
-    mcdonalds = set(map(int, input().split()))
-    m_dist = dijkstra(V, G, W, mcdonalds)
+    mcdonalds = [*map(int, input().split())]
+    m_dist = dijkstra(V, G, mcdonalds)
     S, y = map(int, input().split())
-    starbucks = set(map(int, input().split()))
-    s_dist = dijkstra(V, G, W, starbucks)
+    starbucks = [*map(int, input().split())]
+    s_dist = dijkstra(V, G, starbucks)
     ans = 1e10
     for i in range(1, V + 1):
-        if i in mcdonalds or i in starbucks:
-            continue
-        if m_dist[i] > x or s_dist[i] > y:
-            continue
-        dist = m_dist[i] + s_dist[i]
-        if dist < ans:
-            ans = dist
+        if 0 < m_dist[i] <= x and 0 < s_dist[i] <= y:
+            dist = m_dist[i] + s_dist[i]
+            if dist < ans:
+                ans = dist
     print(ans if ans != 1e10 else -1)
 
 solve()
