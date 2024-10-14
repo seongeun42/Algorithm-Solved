@@ -1,38 +1,33 @@
-from collections import deque
 import sys
 input = sys.stdin.readline
 
-def bfs(s, G, usado):
-    q = deque([(s, 1e10)])
-    visited = [-1] * len(G)
-    visited[s] = 0
-    while q:
-        cn, v = q.popleft()
-        for nn in G[cn]:
-            if visited[nn] == -1:
-                visited[nn] = min(usado[(cn, nn)], v)
-                q.append((nn, visited[nn]))
-    return visited
+def find_root(n, R):
+    if R[n] < 0:
+        return n
+    R[n] = find_root(R[n], R)
+    return R[n]
 
 def solve():
     N, Q = map(int, input().split())
-    G = [[] for _ in range(N + 1)]
-    usado = {}
-    for _ in range(N - 1):
-        p, q, r = map(int, input().split())
-        G[p].append(q)
-        G[q].append(p)
-        usado[(p, q)] = r
-        usado[(q, p)] = r
-    dist = {}
-    for _ in range(Q):
-        k, v = map(int, input().split())
-        if v not in dist:
-            dist[v] = bfs(v, G, usado)
-        cnt = 0
-        for u in dist[v]:
-            if k <= u:
-                cnt += 1
+    E = sorted([[*map(int, input().split())] for _ in range(N - 1)], key=lambda x: x[2])
+    queries = sorted([[*map(int, input().split())] + [i] for i in range(Q)], key=lambda x: -x[0])
+    R = [-1] * (N + 1)
+    ans = []
+    for k, v, idx in queries:
+        while E and E[-1][2] >= k:
+            p, q, r = E.pop()
+            pr = find_root(p, R)
+            qr = find_root(q, R)
+            if pr < qr:
+                R[pr] += R[qr]
+                R[qr] = pr
+            elif pr > qr:
+                R[qr] += R[pr]
+                R[pr] = qr
+        vr = find_root(v, R)
+        ans.append((idx, -R[vr] - 1))
+    ans.sort()
+    for idx, cnt in ans:
         print(cnt)
-
+        
 solve()
