@@ -2,14 +2,13 @@ import sys
 input = sys.stdin.readline
 
 def solve():
-    sosu = []
     check = [False, False] + [True] * 1299710
-    for i in range(2, 1299710):
+    for i in range(2, int(1299710**0.5)):
         if not check[i]:
             continue
-        sosu.append(i)
         for j in range(i + i, 1299710, i):
             check[j] = False
+    sosu = [i for i in range(len(check)) if check[i]]
     T = int(input())
     for _ in range(T):
         k = int(input())
