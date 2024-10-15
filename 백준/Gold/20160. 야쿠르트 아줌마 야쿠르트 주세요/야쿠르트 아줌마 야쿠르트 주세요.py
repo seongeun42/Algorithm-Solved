@@ -1,7 +1,7 @@
 import sys, heapq
 input = sys.stdin.readline
 
-def dijkstra(G, weight, S):
+def dijkstra(G, S):
     dp = [1e10] * len(G)
     dp[S] = 0
     hq = [(0, S)]
@@ -9,8 +9,8 @@ def dijkstra(G, weight, S):
         cw, cn = heapq.heappop(hq)
         if dp[cn] < cw:
             continue
-        for nn in G[cn]:
-            w = weight[(min(nn, cn), max(nn, cn))] + cw
+        for nw, nn in G[cn]:
+            w = nw + cw
             if w < dp[nn]:
                 dp[nn] = w
                 heapq.heappush(hq, (w, nn))
@@ -19,20 +19,16 @@ def dijkstra(G, weight, S):
 def solve():
     V, E = map(int, input().split())
     G = [[] for _ in range(V + 1)]
-    weight = {}
     for _ in range(E):
         u, v, w = map(int, input().split())
-        G[u].append(v)
-        G[v].append(u)
-        tmp = (min(u, v), max(u, v))
-        if tmp not in weight or w < weight[tmp]:
-            weight[tmp] = w
+        G[u].append((w, v))
+        G[v].append((w, u))
     seller = [*map(int, input().split())]
     start = int(input())
-    my_time = dijkstra(G, weight, start)
+    my_time = dijkstra(G, start)
     seller_time = {}
     for v in set(seller):
-        seller_time[v] = dijkstra(G, weight, v)
+        seller_time[v] = dijkstra(G, v)
     ans = []
     if my_time[seller[0]] <= 0:
         ans.append(seller[0])
