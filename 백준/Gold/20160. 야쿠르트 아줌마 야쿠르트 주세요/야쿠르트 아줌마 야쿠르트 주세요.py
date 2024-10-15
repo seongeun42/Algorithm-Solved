@@ -30,16 +30,17 @@ def solve():
     seller = [*map(int, input().split())]
     start = int(input())
     my_time = dijkstra(G, weight, start)
-    seller_time = [1e10] * (V + 1)
-    seller_time[seller[0]] = 0
+    seller_time = {}
+    for v in set(seller):
+        seller_time[v] = dijkstra(G, weight, v)
     ans = []
     if my_time[seller[0]] <= 0:
         ans.append(seller[0])
     time = 0
     pre = 0
     while pre < 10:
-        dp = dijkstra(G, weight, seller[pre])
         nxt = pre + 1
+        dp = seller_time[seller[pre]]
         while nxt < 10 and dp[seller[nxt]] == 1e10:
             nxt += 1
         if nxt == 10:
