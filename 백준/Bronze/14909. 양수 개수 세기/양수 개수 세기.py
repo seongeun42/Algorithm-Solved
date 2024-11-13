@@ -1,0 +1,1 @@
+print(sum([1 for v in [*map(int, input().split())] if v > 0]))
