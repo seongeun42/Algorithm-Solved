@@ -12,25 +12,18 @@ def solve():
             return path
         # *
         nxt = cur * cur
-        if -s <= nxt <= t * 2 and nxt not in visited:
+        if 0 <= nxt <= t and nxt not in visited:
             visited.add(nxt)
             q.append((nxt, path + "*"))
         # +
         nxt = cur + cur
-        if -s <= nxt <= t * 2 and nxt not in visited:
+        if 0 <= nxt <= t and nxt not in visited:
             visited.add(nxt)
             q.append((nxt, path + "+"))
-        # -
-        nxt = cur - cur
-        if -s <= nxt <= t * 2 and nxt not in visited:
-            visited.add(nxt)
-            q.append((nxt, path + "-"))
-        # /
-        if cur != 0:
-            nxt = cur // cur
-            if -s <= nxt <= t * 2 and nxt not in visited:
-                visited.add(nxt)
-                q.append((nxt, path + "/"))
+        # -는 0이라 필요X, /는 무조건 1
+        if 1 not in visited:
+            visited.add(1)
+            q.append((1, path + "/"))
     return -1
 
 print(solve())
