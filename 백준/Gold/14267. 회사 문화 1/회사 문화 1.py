@@ -1,4 +1,5 @@
 import sys
+input = sys.stdin.readline
 sys.setrecursionlimit(10**6)
 
 def dfs(cur, tree, praise, visited):
@@ -20,7 +21,8 @@ def solve():
         praise[i] += w
     visited = [False] * (n + 1)
     for i in range(1, n + 1):
-        dfs(i, tree, praise, visited)
+        if not visited[i]:
+            dfs(i, tree, praise, visited)
     print(*praise[1:])
 
 solve()
