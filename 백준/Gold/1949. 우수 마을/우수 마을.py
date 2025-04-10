@@ -2,14 +2,15 @@ import sys
 input = sys.stdin.readline
 sys.setrecursionlimit(10**5)
 
-def dfs(cur, visited, town, dp):
-    visited[cur] = True
+def dfs(pre, cur, population, town):
+    cur_superior, cur_normal = population[cur - 1], 0
     for nxt in town[cur]:
-        if not visited[nxt]:
-            super_town, normal_town = dfs(nxt, visited, town, dp)
-            dp[cur][0] += normal_town
-            dp[cur][1] += max(super_town, normal_town)
-    return dp[cur]
+        if nxt == pre:
+            continue
+        nxt_superior, nxt_normal = dfs(cur, nxt, population, town)
+        cur_superior += nxt_normal
+        cur_normal += max(nxt_superior, nxt_normal)
+    return cur_superior, cur_normal
 
 def solve():
     N = int(input())
@@ -19,9 +20,6 @@ def solve():
         a, b = map(int, input().split())
         town[a].append(b)
         town[b].append(a)
-    dp = [[0, 0]] + [[p, 0] for p in population]
-    visited = [False] * (N + 1)
-    dfs(1, visited, town, dp)
-    print(max(sum(dp, [])))
+    print(max(dfs(0, 1, population, town)))
 
 solve()
