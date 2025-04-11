@@ -1,27 +1,16 @@
-import sys, heapq
+import sys
 input = sys.stdin.readline
-
-def find_day(days, cur):
-    if days[cur] == cur:
-        return cur
-    days[cur] = find_day(days, days[cur])
-    return days[cur]
 
 def solve():
     N = int(input())
-    homework = []
-    for _ in range(N):
-        d, w = map(int, input().split())
-        heapq.heappush(homework, (-w, d))
-    days = list(range(1001))
+    homework = sorted([[*map(int, input().split())] for _ in range(N)], key=lambda x: -x[1])
+    days = [True] * 1001
     scores = 0
-    while homework:
-        w, d = heapq.heappop(homework)
-        w = -w
-        day = find_day(days, d)
-        if day > 0:
-            null_day = find_day(days, day - 1)
-            days[day] = null_day
+    for d, w in homework:
+        while not days[d]:
+            d -= 1
+        if d != 0:
+            days[d] = False
             scores += w
     print(scores)
 
