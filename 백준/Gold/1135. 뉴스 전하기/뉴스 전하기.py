@@ -1,11 +1,7 @@
 def dfs(cur, tree):
     nexts = sorted([dfs(nxt, tree) for nxt in tree[cur]])
     cnt = len(nexts)
-    if cnt == 0:
-        return 0
-    for i in range(cnt):
-        nexts[i] += cnt - i
-    return max(nexts)
+    return max([0] + [nexts[i] + cnt - i for i in range(cnt)])
 
 def solve():
     N = int(input())
