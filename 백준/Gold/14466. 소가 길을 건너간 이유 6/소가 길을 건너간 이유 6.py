@@ -33,7 +33,7 @@ def solve():
             road[(r1, c1)] = {(r2, c2)}
     for _ in range(K):
         r, c = map(int, input().split())
-        grass[r - 1][c - 1] += 1
+        grass[r - 1][c - 1] = 1
     cow_group = []
     for i in range(N):
         for j in range(N):
@@ -42,9 +42,11 @@ def solve():
                 if cnt > 0:
                     cow_group.append(cnt)
     ans = 0
+    prefix = [cow_group[0]]
+    for i in range(1, len(cow_group)):
+        prefix.append(cow_group[i] + prefix[i - 1])
     for i, v in enumerate(cow_group):
-        for j in range(i + 1, len(cow_group)):
-            ans += v * cow_group[j]
+        ans += v * (prefix[-1] - prefix[i])
     print(ans)
 
 solve()
