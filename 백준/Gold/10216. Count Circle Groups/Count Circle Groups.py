@@ -15,12 +15,12 @@ def solve():
         circle = [tuple(map(int, input().split())) for _ in range(N)]
         for i in range(N):
             for j in range(i + 1, N):
-                ir = find_root(i, R)
-                jr = find_root(j, R)
-                if ir != jr:
-                    a1, b1, r1 = circle[i]
-                    a2, b2, r2 = circle[j]
-                    if (a1 - a2) ** 2 + (b1 - b2) ** 2 <= (r1 + r2) ** 2:
+                a1, b1, r1 = circle[i]
+                a2, b2, r2 = circle[j]
+                if (a1 - a2) ** 2 + (b1 - b2) ** 2 <= (r1 + r2) ** 2:
+                    ir = find_root(i, R)
+                    jr = find_root(j, R)
+                    if ir != jr:
                         R[min(ir, jr)] = max(ir, jr)
         cnt = 0
         for i in range(N):
