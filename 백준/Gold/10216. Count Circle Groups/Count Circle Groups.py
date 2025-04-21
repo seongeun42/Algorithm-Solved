@@ -12,16 +12,17 @@ def solve():
     for _ in range(T):
         N = int(input())
         R = list(range(N))
-        circle = [tuple(map(int, input().split())) for _ in range(N)]
+        circle = []
         for i in range(N):
-            for j in range(i + 1, N):
-                a1, b1, r1 = circle[i]
-                a2, b2, r2 = circle[j]
+            a1, b1, r1 = map(int, input().split())
+            for j, v in enumerate(circle):
+                a2, b2, r2 = v
                 if (a1 - a2) ** 2 + (b1 - b2) ** 2 <= (r1 + r2) ** 2:
                     ir = find_root(i, R)
                     jr = find_root(j, R)
                     if ir != jr:
                         R[min(ir, jr)] = max(ir, jr)
+            circle.append((a1, b1, r1))
         cnt = 0
         for i in range(N):
             if find_root(i, R) == i:
