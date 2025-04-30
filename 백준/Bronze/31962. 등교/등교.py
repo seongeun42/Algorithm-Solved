@@ -1,10 +1,11 @@
-from sys import stdin
-input = stdin.readline
+import sys
+input = sys.stdin.readline
 
-N, X = map(int, input().split())
-res = -1
-for _ in range(N):
-    S, T = map(int, input().split())
-    if res < S and S + T <= X:
-        res = S
-    print(res)
+n, x = map(int, input().split())
+arr = sorted([[*map(int, input().split())] for _ in range(n)], key=lambda x: (-x[0], x[1]))
+for s, t in arr:
+    if s + t <= x:
+        print(s)
+        break
+else:
+    print(-1)
