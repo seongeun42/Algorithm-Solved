@@ -3,16 +3,14 @@ input = sys.stdin.readline
 
 def solve():
     N = int(input())
-    arr = sorted([[*map(int, input().split())] for _ in range(N)])
+    arr = [[*map(int, input().split())] for _ in range(N)]
+    arr.sort()
     hq = []
-    day = 1
     for dead, cup in arr:
-        if day <= dead:
+        if len(hq) < dead:
             heapq.heappush(hq, cup)
-            day += 1
         elif hq[0] < cup:
-            heapq.heappop(hq)
-            heapq.heappush(hq, cup)
+            heapq.heappushpop(hq, cup)
     print(sum(hq))
 
 solve()
