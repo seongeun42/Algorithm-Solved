@@ -17,7 +17,7 @@ def solve():
         if solve_day == 0:
             continue
         ans += cup
-        day[solve_day] = find_root(solve_day - 1, day)
+        day[solve_day] = solve_day - 1
     print(ans)
 
 solve()
