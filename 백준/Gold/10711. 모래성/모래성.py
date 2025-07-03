@@ -6,11 +6,9 @@ def bfs(sand, H, W):
     dr = [0, 0, 1, -1, 1, -1, 1, -1]
     dc = [1, -1, 1, -1, -1, 1, 0, 0]
     q = deque([])
-    # 빈공간 큐에 추가
     for i in range(H):
         for j in range(W):
             if sand[i][j] == '.':
-                # r, c, wave_cnt
                 q.append((i, j, 0))
     cnts = [[0] * W for _ in range(H)]
     ans = 0
@@ -20,9 +18,8 @@ def bfs(sand, H, W):
             ans = wave_cnt
         for d in range(8):
             nr, nc = cr + dr[d], cc + dc[d]
-            if 0 <= nr < H and 0 <= nc < W and sand[nr][nc] != '.':
+            if 0 <= nr < H and 0 <= nc < W and sand[nr][nc] not in ".9":
                 cnts[nr][nc] += 1
-                # 새로운 빈공간 큐에 추가
                 if int(sand[nr][nc]) == cnts[nr][nc]:
                     sand[nr][nc] = '.'
                     q.append((nr, nc, wave_cnt + 1))
