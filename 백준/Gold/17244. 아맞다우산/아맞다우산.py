@@ -16,9 +16,10 @@ def bfs(N, M, home, start, end, stuff):
                 nstuff = cstuff
                 if home[nr][nc] == 'X':
                     nstuff = cstuff | (1 << stuff[(nr, nc)])
+                if home[nr][nc] == 'E' and nstuff == (2 ** len(stuff) - 1):
+                    return visited[cr][cc][cstuff]
                 visited[nr][nc][nstuff] = visited[cr][cc][cstuff] + 1
                 q.append((nr, nc, nstuff))
-    return visited[end[0]][end[1]][-1] - 1
 
 def solve():
     N, M = map(int, input().split())
