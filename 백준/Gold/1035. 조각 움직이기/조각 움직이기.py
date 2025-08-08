@@ -1,4 +1,4 @@
-from collections import deque
+from itertools import permutations
 import sys
 input = sys.stdin.readline
 
@@ -17,31 +17,38 @@ def is_connected(idxs):
         return cnt
     return dfs(idxs[0]) == len(idxs)
 
-def bfs(init_bits):
-    q = deque([(init_bits, 0)])
-    visited = {init_bits}
-    while q:
-        cur, cnt = q.popleft()
-        idxs = [divmod(i, 5) for i in range(25) if cur & (1 << i)]
-        if is_connected(idxs):
-            return cnt
-        for cr, cc in set(idxs):
-            for d in range(4):
-                nr, nc = cr + dr[d], cc + dc[d]
-                if 0 <= nr < 5 and 0 <= nc < 5 and (nr, nc) not in idxs:
-                    nxt = cur & ~(1 << (cr * 5 + cc))
-                    nxt |= (1 << (nr * 5 + nc))
-                    if nxt not in visited:
-                        visited.add(nxt)
-                        q.append((nxt, cnt + 1))
+def np_combination(mask):
+    N = len(mask)
+    i = N - 1
+    while i > 0 and mask[i - 1] >= mask[i]:
+        i -= 1
+    if i == 0:
+        return False
+    j = N - 1
+    while mask[i - 1] >= mask[j]:
+        j -= 1
+    mask[i - 1], mask[j] = mask[j], mask[i - 1]
+    mask[i:] = sorted(mask[i:])
+    return True
 
 def solve():
     arr = [input().rstrip() for _ in range(5)]
-    bits = 0
+    x = []
     for i in range(5):
         for j in range(5):
             if arr[i][j] == '*':
-                bits |= (1 << (i * 5 + j))
-    print(bfs(bits))
+                x.append((i, j))
+    ans = float("inf")
+    mask = [0] * (25 - len(x)) + [1] * len(x)
+    while 1:
+        nxt_x = [divmod(i, 5) for i in range(25) if mask[i]]
+        if is_connected(nxt_x):
+            for p in permutations(nxt_x):
+                total = sum([abs(x[i][0] - p[i][0]) + abs(x[i][1] - p[i][1]) for i in range(len(x))])
+                if total < ans:
+                    ans = total
+        if not np_combination(mask):
+            break
+    print(ans)
 
 solve()
