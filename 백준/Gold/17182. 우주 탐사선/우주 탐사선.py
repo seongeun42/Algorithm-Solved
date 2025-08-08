@@ -1,21 +1,17 @@
 import sys
 input = sys.stdin.readline
 
-ans = float("inf")
-
-def backtrack(cur, visited, G, time, cnt):
-    global ans
-    if time > ans:
-        return
-    if cnt == len(visited):
-        if time < ans:
-            ans = time
-        return
-    for i in range(len(G)):
-        if not visited[i]:
-            visited[i] = True
-            backtrack(i, visited, G, time + G[cur][i], cnt + 1)
-            visited[i] = False
+def backtrack(cur, visit, G, N, dp):
+    if visit == (1 << N) - 1:
+        return 0
+    if dp[cur][visit] != -1:
+        return dp[cur][visit]
+    dp[cur][visit] = float("inf")
+    for nxt in range(N):
+        if visit & (1 << nxt):
+            continue
+        dp[cur][visit] = min(dp[cur][visit], G[cur][nxt] + backtrack(nxt, visit | (1 << nxt), G, N, dp))
+    return dp[cur][visit]
 
 def solve():
     N, K = map(int, input().split())
@@ -23,13 +19,10 @@ def solve():
     for m in range(N):
         for i in range(N):
             for j in range(N):
-                if i == j:
-                    continue
+                if i == j: continue
                 if T[i][m] + T[m][j] < T[i][j]:
                     T[i][j] = T[i][m] + T[m][j]
-    visited = [False] * N
-    visited[K] = True
-    backtrack(K, visited, T, 0, 1)
-    print(ans)
+    dp = [[-1] * (1 << N) for _ in range(N)]
+    print(backtrack(K, 1 << K, T, N, dp))
 
 solve()
