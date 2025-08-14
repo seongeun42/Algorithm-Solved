@@ -1,21 +1,11 @@
-def dfs(x, y, dna, dp):
-    if x >= y:
-        return 0
-    if dp[x][y] != -1:
-        return dp[x][y]
-    if (dna[x] == 'a' and dna[y] == 't') or (dna[x] == 'g' and dna[y] == 'c'):
-        dp[x][y] = dfs(x + 1, y - 1, dna, dp) + 2
-    for mid in range(x, y):
-        v = dfs(x, mid, dna, dp) + dfs(mid + 1, y, dna, dp)
-        if dp[x][y] < v:
-            dp[x][y] = v
-    return dp[x][y]
-
-def solve():
-    dna = input()
-    N = len(dna)
-    dp = [[-1] * N for _ in range(N)]
-    dfs(0, N - 1, dna, dp)
-    print(dp[0][N - 1])
-
-solve()
+dna = input()
+N = len(dna)
+dp = [[0] * N for _ in range(N)]
+for i in range(1, N): # 뒤
+    for j in range(i - 1, -1, -1): # 앞
+        if (dna[j] == 'a' and dna[i] == 't') or (dna[j] == 'g' and dna[i] == 'c'):
+            dp[j][i] = dp[j + 1][i - 1] + 2
+        for mid in range(j, i):
+            if dp[j][i] < dp[j][mid] + dp[mid + 1][i]:
+                dp[j][i] = dp[j][mid] + dp[mid + 1][i]
+print(dp[0][-1])
