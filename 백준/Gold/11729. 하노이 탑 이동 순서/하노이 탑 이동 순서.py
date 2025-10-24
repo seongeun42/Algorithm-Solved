@@ -1,6 +1,3 @@
-import sys
-sys.setrecursionlimit(10**8)
-
 N = int(input())
 
 def hanoi(cnt, cur, desc, rest):
