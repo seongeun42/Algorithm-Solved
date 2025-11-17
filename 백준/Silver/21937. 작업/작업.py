@@ -1,13 +1,18 @@
+from collections import deque
 import sys
 input = sys.stdin.readline
-sys.setrecursionlimit(10**6)
 
-def dfs(cur, G, visited):
-    visited[cur] = True
-    cnt = 1
-    for nxt in G[cur]:
-        if not visited[nxt]:
-            cnt += dfs(nxt, G, visited)
+def bfs(X, G, visited):
+    q = deque([X])
+    visited[X] = True
+    cnt = 0
+    while q:
+        cur = q.popleft()
+        for nxt in G[cur]:
+            if not visited[nxt]:
+                cnt += 1
+                visited[nxt] = True
+                q.append(nxt)
     return cnt
 
 def solve():
@@ -18,6 +23,6 @@ def solve():
         G[B].append(A)
     X = int(input())
     visited = [False] * (N + 1)
-    print(dfs(X, G, visited) - 1)
+    print(bfs(X, G, visited))
 
 solve()
