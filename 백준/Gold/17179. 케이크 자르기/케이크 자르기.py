@@ -18,5 +18,6 @@ for _ in range(N):
         if cur_cnt <= cnt:
             e = mid - 1
         else:
+            ans = mid
             s = mid + 1
-    print(e)
+    print(ans)
