@@ -28,6 +28,8 @@ for i in range(1 << N):
                 have = True
         if have:
             total_price += price
+        else:
+            break
     if cnt == len(T) and total_price < ans:
         ans = total_price
 print(ans if ans != 2_000_000 else -1)
