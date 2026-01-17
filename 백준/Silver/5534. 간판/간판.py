@@ -5,6 +5,8 @@ def check(new, old):
     start = [i for i in range(len(old)) if old[i] == new[0]]
     for s in start:
         for t in range(1, len(old)):
+            if s + t * (len(new) - 1) >= len(old):
+                break
             idx = 0
             for c in old[s::t]:
                 if c == new[idx]:
